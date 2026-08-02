@@ -1,12 +1,13 @@
 import React from 'react';
 import type { UserStats } from '../types/game';
 import { soundFx } from '../utils/soundFx';
-import { Volume2, VolumeX, Flame, Heart, BookOpen, Award, Zap } from 'lucide-react';
+import { Volume2, VolumeX, Flame, Heart, BookOpen, Award, Zap, Bot } from 'lucide-react';
 
 interface NavbarProps {
   stats: UserStats;
   onOpenGrammar: () => void;
   onOpenBadges: () => void;
+  onOpenAiTutor: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
   onGoHome: () => void;
@@ -16,6 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   stats,
   onOpenGrammar,
   onOpenBadges,
+  onOpenAiTutor,
   isMuted,
   onToggleMute,
   onGoHome
@@ -64,6 +66,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Quick Actions */}
         <div className="actions-group">
+          <button 
+            onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
+            className="action-btn ai-btn text-purple-700 font-extrabold border-purple-300 bg-purple-50"
+            title="Tutor de Inteligência Artificial Muvy AI"
+          >
+            <Bot className="w-4 h-4 text-purple-600" />
+            <span className="btn-label">Tutor IA</span>
+          </button>
+
           <button 
             onClick={() => { soundFx.playClick(); onOpenGrammar(); }}
             className="action-btn grammar-btn"

@@ -7,6 +7,7 @@ import { ExerciseCard } from './components/ExerciseCard';
 import { ResultScreen } from './components/ResultScreen';
 import { GrammarModal } from './components/GrammarModal';
 import { AchievementsModal } from './components/AchievementsModal';
+import { AiTutorModal } from './components/AiTutorModal';
 import { soundFx } from './utils/soundFx';
 
 import { fetchUserStatsFromDb, syncUserStatsToDb } from './services/api';
@@ -35,6 +36,7 @@ export function App() {
   const [isMuted, setIsMuted] = useState<boolean>(() => soundFx.getMuted());
   const [isGrammarOpen, setIsGrammarOpen] = useState(false);
   const [isBadgesOpen, setIsBadgesOpen] = useState(false);
+  const [isAiOpen, setIsAiOpen] = useState(false);
 
   // Active session state
   const [activeModule, setActiveModule] = useState<LearningModule | null>(null);
@@ -162,6 +164,7 @@ export function App() {
         stats={stats}
         onOpenGrammar={() => setIsGrammarOpen(true)}
         onOpenBadges={() => setIsBadgesOpen(true)}
+        onOpenAiTutor={() => setIsAiOpen(true)}
         isMuted={isMuted}
         onToggleMute={handleToggleMute}
         onGoHome={handleGoHome}
@@ -239,6 +242,11 @@ export function App() {
         isOpen={isBadgesOpen}
         onClose={() => setIsBadgesOpen(false)}
         stats={stats}
+      />
+
+      <AiTutorModal
+        isOpen={isAiOpen}
+        onClose={() => setIsAiOpen(false)}
       />
     </div>
   );
