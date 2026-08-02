@@ -9,6 +9,8 @@ import { GrammarModal } from './components/GrammarModal';
 import { AchievementsModal } from './components/AchievementsModal';
 import { soundFx } from './utils/soundFx';
 
+import { fetchUserStatsFromDb, syncUserStatsToDb } from './services/api';
+
 const INITIAL_STATS: UserStats = {
   xp: 0,
   level: 1,
@@ -41,9 +43,19 @@ export function App() {
   const [sessionXpEarned, setSessionXpEarned] = useState<number>(0);
   const [isModuleFinished, setIsModuleFinished] = useState(false);
 
-  // Save stats on update
+  // Sync with MongoDB on mount
+  useEffect(() => {
+    fetchUserStatsFromDb().then((remoteStats) => {
+      if (remoteStats) {
+        setStats(remoteStats);
+      }
+    });
+  }, []);
+
+  // Save stats on update to LocalStorage & MongoDB
   useEffect(() => {
     localStorage.setItem('muvlern_user_stats', JSON.stringify(stats));
+    syncUserStatsToDb(stats);
   }, [stats]);
 
   // Handle Mute Toggle
