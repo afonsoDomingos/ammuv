@@ -1,11 +1,7 @@
-// Web Audio API Sound Synthesizer for MuvLern
+// Web Audio API Sound Synthesizer with Combo Pitch Scaling
 class SoundFxManager {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
-
-  constructor() {
-    // Lazy initialization on first user gesture
-  }
 
   private initCtx() {
     if (!this.ctx) {
@@ -36,19 +32,20 @@ class SoundFxManager {
     
     osc.type = 'sine';
     osc.frequency.setValueAtTime(600, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+    osc.frequency.exponentialRampToValueAtTime(350, this.ctx.currentTime + 0.04);
 
-    gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.04);
 
     osc.connect(gain);
     gain.connect(this.ctx.destination);
 
     osc.start();
-    osc.stop(this.ctx.currentTime + 0.05);
+    osc.stop(this.ctx.currentTime + 0.04);
   }
 
-  public playCorrect() {
+  // Play correct sound with combo streak pitch multiplier!
+  public playCorrect(combo: number = 1) {
     if (this.isMuted) return;
     this.initCtx();
     if (!this.ctx) return;
@@ -58,24 +55,27 @@ class SoundFxManager {
     const osc2 = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
+    // Base pitch increases with combo!
+    const baseFreq = 523.25 * Math.pow(1.06, Math.min(combo, 5)); // C5 scaled up
+    const targetFreq = 783.99 * Math.pow(1.06, Math.min(combo, 5)); // G5 scaled up
+
     osc1.type = 'triangle';
     osc2.type = 'sine';
 
-    // Pleasant double chime: E5 -> A5
-    osc1.frequency.setValueAtTime(659.25, now); // E5
-    osc1.frequency.setValueAtTime(880, now + 0.1); // A5
+    osc1.frequency.setValueAtTime(baseFreq, now);
+    osc1.frequency.setValueAtTime(targetFreq, now + 0.08);
 
-    osc2.frequency.setValueAtTime(1318.5, now + 0.1); // E6 high accent
+    osc2.frequency.setValueAtTime(targetFreq * 1.25, now + 0.08);
 
     gain.gain.setValueAtTime(0.2, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
     osc1.connect(gain);
     osc2.connect(gain);
     gain.connect(this.ctx.destination);
 
     osc1.start(now);
-    osc2.start(now + 0.1);
+    osc2.start(now + 0.08);
     osc1.stop(now + 0.35);
     osc2.stop(now + 0.35);
   }
@@ -90,42 +90,17 @@ class SoundFxManager {
     const gain = this.ctx.createGain();
 
     osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(220, now); // A3
-    osc.frequency.linearRampToValueAtTime(150, now + 0.25); // Drop frequency
+    osc.frequency.setValueAtTime(200, now);
+    osc.frequency.linearRampToValueAtTime(120, now + 0.22);
 
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
 
     osc.connect(gain);
     gain.connect(this.ctx.destination);
 
     osc.start(now);
-    osc.stop(now + 0.25);
-  }
-
-  public playVictory() {
-    if (this.isMuted) return;
-    this.initCtx();
-    if (!this.ctx) return;
-
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-    notes.forEach((freq, index) => {
-      const now = (this.ctx?.currentTime || 0) + index * 0.12;
-      const osc = this.ctx!.createOscillator();
-      const gain = this.ctx!.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.value = freq;
-
-      gain.gain.setValueAtTime(0.25, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
-      osc.connect(gain);
-      gain.connect(this.ctx!.destination);
-
-      osc.start(now);
-      osc.stop(now + 0.3);
-    });
+    osc.stop(now + 0.22);
   }
 
   public playPop() {
@@ -138,10 +113,10 @@ class SoundFxManager {
     const gain = this.ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(400, now);
-    osc.frequency.exponentialRampToValueAtTime(800, now + 0.04);
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(900, now + 0.04);
 
-    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.setValueAtTime(0.12, now);
     gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
 
     osc.connect(gain);
@@ -149,6 +124,31 @@ class SoundFxManager {
 
     osc.start(now);
     osc.stop(now + 0.04);
+  }
+
+  public playVictory() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx) return;
+
+    const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // Fanfare C5-E5-G5-C6-E6
+    notes.forEach((freq, index) => {
+      const now = (this.ctx?.currentTime || 0) + index * 0.1;
+      const osc = this.ctx!.createOscillator();
+      const gain = this.ctx!.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+      osc.connect(gain);
+      gain.connect(this.ctx!.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.3);
+    });
   }
 }
 

@@ -1,23 +1,23 @@
-export type ExerciseType = 'multiple_choice' | 'sentence_builder' | 'fill_blank' | 'image_choice';
+export type ExerciseType = 'multiple_choice' | 'sentence_builder' | 'fill_blank' | 'image_choice' | 'true_false' | 'listening';
 
 export type VerbToBeCategory = 'affirmative' | 'negative' | 'interrogative' | 'mixed';
 
 export interface OptionItem {
   text: string;
-  icon?: string; // Emoji / Icon representation for image_choice
+  icon?: string;
   hint?: string;
 }
 
 export interface Exercise {
   id: string;
   type: ExerciseType;
-  badgeTag?: string; // e.g. "PALAVRA NOVA", "REVISÃO", "PRÁTICA DO TO BE"
+  badgeTag?: string; // e.g. "PALAVRA NOVA", "REVISÃO", "ESCUTE E RESPONDA"
   question: string;
-  speakerText?: string; // Text spoken by character in speech bubble
+  speakerText?: string; // Spoken text for audio listening questions
   contextPt?: string; // Translation hint
-  options?: OptionItem[]; // Rich options with optional icons
-  correctAnswer: string; // Correct answer string
-  words?: string[]; // Scrambled word chips for sentence builder
+  options?: OptionItem[];
+  correctAnswer: string;
+  words?: string[]; // Scrambled chips
   explanation: string; // Pedagogical explanation
 }
 

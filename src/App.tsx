@@ -200,6 +200,7 @@ export function App() {
             currentIndex={currentExerciseIndex}
             totalExercises={activeModule.exercises.length}
             heartsRemaining={stats.hearts}
+            currentStreak={stats.streak}
             onAnswer={handleAnswer}
             onNext={handleNextExercise}
             onClose={handleGoHome}

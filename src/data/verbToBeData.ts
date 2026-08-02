@@ -4,7 +4,7 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
   {
     id: 'module-1-affirmative',
     title: '1. Verbo To Be: Afirmativo',
-    description: 'Aprenda a usar AM, IS e ARE em frases afirmativas simples.',
+    description: 'Domine a forma afirmativa do Verbo To Be (AM, IS, ARE) com exercícios visuais e auditivos.',
     category: 'affirmative',
     level: 1,
     icon: 'Sparkles',
@@ -14,7 +14,7 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
         id: 'aff-1',
         type: 'image_choice',
         badgeTag: 'PALAVRA NOVA',
-        question: 'Qual destas opções significa "Eu sou um estudante"?',
+        question: 'Qual destas imagens representa "I am a student"?',
         speakerText: 'I am a student.',
         contextPt: 'Eu sou um estudante.',
         options: [
@@ -27,62 +27,65 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
       },
       {
         id: 'aff-2',
-        type: 'multiple_choice',
-        badgeTag: 'PRÁTICA DO TO BE',
-        question: 'Selecione o significado correto:',
+        type: 'listening',
+        badgeTag: 'ESCUTE O ÁUDIO 🎧',
+        question: 'Escute o áudio e selecione a opção correta:',
         speakerText: 'She is happy today.',
         contextPt: 'Ela está feliz hoje.',
         options: [
-          { text: 'Ela está feliz hoje' },
-          { text: 'Ela não está feliz hoje' },
-          { text: 'Nós estamos felizes hoje' }
+          { text: 'She is happy today' },
+          { text: 'They are happy today' },
+          { text: 'I am happy today' }
         ],
-        correctAnswer: 'Ela está feliz hoje',
-        explanation: 'Para a 3ª pessoa do singular (He, She, It), usamos a forma "IS": "She is happy".'
+        correctAnswer: 'She is happy today',
+        explanation: 'O mascote disse "She is happy today" (Ela está feliz hoje).'
       },
       {
         id: 'aff-3',
-        type: 'sentence_builder',
-        badgeTag: 'MONTE A FRASE',
-        question: 'Escreva em inglês:',
-        speakerText: 'Eles são médicos.',
-        contextPt: 'Eles são médicos.',
-        words: ['They', 'are', 'doctors', 'is', 'am'],
-        correctAnswer: 'They are doctors',
-        explanation: 'Para o plural (They), a forma correta do Verbo To Be é "ARE".'
+        type: 'true_false',
+        badgeTag: 'VERDADEIRO OU FALSO ⚡',
+        question: 'A frase abaixo está gramaticalmente correta?\n"They is doctors."',
+        speakerText: 'They is doctors.',
+        contextPt: 'Gramática em foco',
+        options: [
+          { text: 'Falso (Incorreto)' },
+          { text: 'Verdadeiro (Correto)' }
+        ],
+        correctAnswer: 'Falso (Incorreto)',
+        explanation: 'Incorreto! Para "They" (plural), a forma correta é "ARE": "They are doctors".'
       },
       {
         id: 'aff-4',
+        type: 'sentence_builder',
+        badgeTag: 'MONTE A FRASE',
+        question: 'Escreva em inglês:',
+        speakerText: 'Nós estamos prontos.',
+        contextPt: 'Nós estamos prontos.',
+        words: ['We', 'are', 'ready', 'is', 'am'],
+        correctAnswer: 'We are ready',
+        explanation: '"We" (Nós) exige a forma "are": "We are ready".'
+      },
+      {
+        id: 'aff-5',
         type: 'fill_blank',
         badgeTag: 'COMPLETE A LACUNA',
-        question: 'Selecione a forma correta para completar:',
-        speakerText: 'It ___ sunny today.',
-        contextPt: 'Está ensolarado hoje.',
+        question: 'Selecione o verbo correto para completar a frase:',
+        speakerText: 'It ___ a beautiful day.',
+        contextPt: 'Está um dia bonito.',
         options: [
           { text: 'is' },
           { text: 'am' },
           { text: 'are' }
         ],
         correctAnswer: 'is',
-        explanation: 'Para o pronome "It" (clima, objetos, animais), usamos a forma "IS".'
-      },
-      {
-        id: 'aff-5',
-        type: 'sentence_builder',
-        badgeTag: 'MONTE A FRASE',
-        question: 'Escreva em português:',
-        speakerText: 'We are ready.',
-        contextPt: 'Nós estamos prontos.',
-        words: ['Nós', 'estamos', 'prontos', 'eles', 'não'],
-        correctAnswer: 'Nós estamos prontos',
-        explanation: '"We are ready" traduz-se como "Nós estamos prontos".'
+        explanation: 'Para objetos, animais e clima (It), usamos a forma "IS".'
       }
     ]
   },
   {
     id: 'module-2-negative',
     title: '2. Verbo To Be: Negativo',
-    description: 'Aprenda a negar usando NOT, ISN\'T e AREN\'T.',
+    description: 'Aprenda a negar usando NOT, ISN\'T e AREN\'T em situações reais.',
     category: 'negative',
     level: 2,
     icon: 'ShieldAlert',
@@ -90,23 +93,8 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
     exercises: [
       {
         id: 'neg-1',
-        type: 'multiple_choice',
-        badgeTag: 'PALAVRA NOVA',
-        question: 'Selecione a tradução correta:',
-        speakerText: 'I am not tired.',
-        contextPt: 'Eu não estou cansado.',
-        options: [
-          { text: 'Eu não estou cansado' },
-          { text: 'Eu estou com sono' },
-          { text: 'Ele não está cansado' }
-        ],
-        correctAnswer: 'Eu não estou cansado',
-        explanation: 'A negação na 1ª pessoa é formada adicionando "not" após o am: "I am not tired".'
-      },
-      {
-        id: 'neg-2',
         type: 'image_choice',
-        badgeTag: 'PRÁTICA DO TO BE',
+        badgeTag: 'PALAVRA NOVA',
         question: 'Qual imagem representa "He isn\'t at home"?',
         speakerText: 'He isn\'t at home.',
         contextPt: 'Ele não está em casa.',
@@ -117,6 +105,21 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
         ],
         correctAnswer: 'He isn\'t at home',
         explanation: '"Isn\'t" é a forma contraída de "is not", usada com He, She e It.'
+      },
+      {
+        id: 'neg-2',
+        type: 'listening',
+        badgeTag: 'ESCUTE O ÁUDIO 🎧',
+        question: 'Escute a frase negativa:',
+        speakerText: 'I am not tired.',
+        contextPt: 'Eu não estou cansado.',
+        options: [
+          { text: 'I am not tired' },
+          { text: 'He is not tired' },
+          { text: 'We are not tired' }
+        ],
+        correctAnswer: 'I am not tired',
+        explanation: 'A negação na 1ª pessoa é "I am not tired".'
       },
       {
         id: 'neg-3',
@@ -131,25 +134,24 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
       },
       {
         id: 'neg-4',
-        type: 'fill_blank',
-        badgeTag: 'COMPLETE A LACUNA',
-        question: 'Escolha a opção correta:',
-        speakerText: 'She ___ a teacher.',
-        contextPt: 'Ela não é uma professora.',
+        type: 'true_false',
+        badgeTag: 'VERDADEIRO OU FALSO ⚡',
+        question: 'A frase abaixo significa "Ela não é professora"?\n"She isn\'t a teacher."',
+        speakerText: 'She isn\'t a teacher.',
+        contextPt: 'Tradução em foco',
         options: [
-          { text: 'isn\'t' },
-          { text: 'aren\'t' },
-          { text: 'am not' }
+          { text: 'Verdadeiro (Correto)' },
+          { text: 'Falso (Incorreto)' }
         ],
-        correctAnswer: 'isn\'t',
-        explanation: 'Com o pronome "She" no negativo, usamos "isn\'t".'
+        correctAnswer: 'Verdadeiro (Correto)',
+        explanation: 'Correto! "She isn\'t a teacher" significa "Ela não é uma professora".'
       }
     ]
   },
   {
     id: 'module-3-interrogative',
     title: '3. Perguntas & Respostas',
-    description: 'Aprenda a fazer perguntas invertendo a ordem do verbo.',
+    description: 'Aprenda a fazer perguntas e respostas curtas com inversão gramatical.',
     category: 'interrogative',
     level: 3,
     icon: 'HelpCircle',
@@ -172,6 +174,21 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
       },
       {
         id: 'int-2',
+        type: 'listening',
+        badgeTag: 'ESCUTE O ÁUDIO 🎧',
+        question: 'Escute a pergunta falada pelo mascote:',
+        speakerText: 'Is she your sister?',
+        contextPt: 'Ela é sua irmã?',
+        options: [
+          { text: 'Is she your sister?' },
+          { text: 'Are she your sister?' },
+          { text: 'Am she your sister?' }
+        ],
+        correctAnswer: 'Is she your sister?',
+        explanation: 'Com o sujeito "She", usamos a forma "Is" no início da pergunta.'
+      },
+      {
+        id: 'int-3',
         type: 'sentence_builder',
         badgeTag: 'MONTE A FRASE',
         question: 'Escreva a pergunta em inglês:',
@@ -182,26 +199,26 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
         explanation: 'Estrutura: Palavra interrogativa (Where) + Verbo (are) + Sujeito (you).'
       },
       {
-        id: 'int-3',
+        id: 'int-4',
         type: 'multiple_choice',
         badgeTag: 'RESPOSTA CURTA',
-        question: 'Responda à pergunta: "Is she your sister?"',
-        speakerText: 'Is she your sister?',
-        contextPt: 'Ela é sua irmã?',
+        question: 'Qual a resposta curta afirmativa para: "Is he at home?"',
+        speakerText: 'Is he at home?',
+        contextPt: 'Ele está em casa?',
         options: [
-          { text: 'Yes, she is.' },
-          { text: 'Yes, she am.' },
-          { text: 'Yes, she are.' }
+          { text: 'Yes, he is.' },
+          { text: 'Yes, he am.' },
+          { text: 'Yes, he are.' }
         ],
-        correctAnswer: 'Yes, she is.',
-        explanation: 'Em respostas curtas afirmativas com "she", usamos "is": "Yes, she is."'
+        correctAnswer: 'Yes, he is.',
+        explanation: 'Para respostas curtas afirmativas com "he", a resposta é: "Yes, he is."'
       }
     ]
   },
   {
     id: 'module-4-mastery',
     title: '4. Desafio Mestre do To Be',
-    description: 'Mistura completa de afirmativas, negativas e perguntas!',
+    description: 'Desafio completo misturando afirmativas, negativas e perguntas!',
     category: 'mixed',
     level: 4,
     icon: 'Trophy',
@@ -232,6 +249,20 @@ export const VERB_TO_BE_MODULES: LearningModule[] = [
         words: ['He', 'isn\'t', 'ready', 'today', 'am'],
         correctAnswer: 'He isn\'t ready today',
         explanation: 'Estrutura: Sujeito (He) + Negação (isn\'t) + Adjetivo (ready) + Tempo (today).'
+      },
+      {
+        id: 'mix-3',
+        type: 'true_false',
+        badgeTag: 'DESAFIO FINAL',
+        question: 'A frase abaixo está gramaticalmente correta?\n"We is happy to meet you."',
+        speakerText: 'We is happy to meet you.',
+        contextPt: 'Nós estamos felizes em conhecer você.',
+        options: [
+          { text: 'Falso (Incorreto)' },
+          { text: 'Verdadeiro (Correto)' }
+        ],
+        correctAnswer: 'Falso (Incorreto)',
+        explanation: 'Incorreto! "We" exige o verbo "ARE": "We are happy to meet you".'
       }
     ]
   }
