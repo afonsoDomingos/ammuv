@@ -430,7 +430,7 @@ body {
 .options-grid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
   margin-bottom: 2rem;
 }
 
@@ -438,28 +438,31 @@ body {
   display: flex;
   align-items: center;
   gap: 1.1rem;
-  padding: 1.1rem 1.4rem;
-  border-radius: 18px;
-  font-size: 1.2rem;
-  font-weight: 800;
+  padding: 1.15rem 1.45rem;
+  border-radius: 20px;
+  font-size: 1.25rem;
+  font-weight: 900;
   text-align: left;
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid var(--border-light);
-  border-bottom: 4px solid var(--border-dark);
+  border-bottom: 5px solid var(--border-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
 .option-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   border: 2px solid var(--border-light);
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 900;
   color: var(--text-muted);
+  background: #ffffff;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .option-btn-default {
@@ -470,6 +473,8 @@ body {
 .option-btn-default:hover {
   background: #f8fafc;
   border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
 }
 
 .option-btn-default:active {
@@ -482,13 +487,15 @@ body {
   border-color: var(--duo-blue);
   border-bottom-color: var(--duo-blue-dark);
   color: var(--duo-blue-dark);
-  box-shadow: 0 6px 16px rgba(28, 176, 246, 0.15);
+  box-shadow: 0 8px 24px rgba(28, 176, 246, 0.2);
+  transform: translateY(-1px);
 }
 
 .option-btn-selected .option-label {
   border-color: var(--duo-blue);
-  color: var(--duo-blue);
+  color: var(--duo-blue-dark);
   background: #ffffff;
+  box-shadow: 0 2px 8px rgba(28, 176, 246, 0.2);
 }
 
 .option-btn-correct {
@@ -496,13 +503,13 @@ body {
   border-color: var(--duo-green);
   border-bottom-color: var(--duo-green-dark);
   color: var(--duo-green-dark);
-  box-shadow: 0 6px 16px rgba(88, 204, 2, 0.15);
+  box-shadow: 0 8px 24px rgba(88, 204, 2, 0.22);
 }
 
 .option-btn-correct .option-label {
   background: var(--duo-green);
   color: #ffffff;
-  border-color: var(--duo-green);
+  border-color: var(--duo-green-dark);
 }
 
 .option-btn-incorrect {
@@ -510,13 +517,13 @@ body {
   border-color: var(--duo-red);
   border-bottom-color: var(--duo-red-dark);
   color: var(--duo-red-dark);
-  box-shadow: 0 6px 16px rgba(255, 75, 75, 0.15);
+  box-shadow: 0 8px 24px rgba(255, 75, 75, 0.22);
 }
 
 .option-btn-incorrect .option-label {
   background: var(--duo-red);
   color: #ffffff;
-  border-color: var(--duo-red);
+  border-color: var(--duo-red-dark);
 }
 
 /* 3D Sentence Builder Chips */

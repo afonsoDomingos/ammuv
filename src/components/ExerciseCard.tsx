@@ -158,7 +158,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
   return (
     <div className="exercise-screen-wrapper flex flex-col min-h-[90vh] justify-between pb-32 relative overflow-hidden">
       
-      {/* Floating Dynamic XP Popup Animation */}
+      {/* Floating Dynamic XP Popup */}
       {floatingXp && (
         <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-floatUp">
           <span className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-amber-400 text-amber-950 font-black text-xl shadow-2xl border-2 border-amber-300">
@@ -275,7 +275,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-2xl mx-auto mb-6">
             {exercise.options.map((opt, idx) => {
               const isSelected = selectedOption === opt.text;
-              let cardStyle = 'bg-white border-2 border-gray-200 border-b-4 hover:bg-gray-50';
+              let cardStyle = 'bg-white border-2 border-slate-200 border-b-4 hover:bg-slate-50';
 
               if (feedback !== 'idle') {
                 if (opt.text === exercise.correctAnswer) {
@@ -284,7 +284,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                   cardStyle = 'bg-rose-100 border-2 border-rose-500 border-b-4 text-rose-800';
                 }
               } else if (isSelected) {
-                cardStyle = 'bg-sky-100 border-2 border-sky-400 border-b-4 text-sky-700';
+                cardStyle = 'bg-sky-100 border-2 border-sky-400 border-b-4 text-sky-700 shadow-md';
               }
 
               return (
@@ -298,8 +298,8 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                   className={`p-4 sm:p-5 rounded-2xl flex sm:flex-col items-center justify-between sm:justify-between min-h-[90px] sm:min-h-[160px] transition-all relative ${cardStyle}`}
                 >
                   <div className="text-3xl sm:text-5xl my-1">{opt.icon || '📘'}</div>
-                  <span className="font-extrabold text-base">{opt.text}</span>
-                  <span className="text-xs font-bold text-gray-400 border border-gray-200 rounded-md px-2 py-0.5">
+                  <span className="font-black text-base sm:text-lg">{opt.text}</span>
+                  <span className="text-xs font-black text-slate-400 border-2 border-slate-200 rounded-lg px-2 py-0.5 shadow-sm">
                     {idx + 1}
                   </span>
                 </button>
@@ -308,9 +308,9 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           </div>
         )}
 
-        {/* Multiple Choice List */}
+        {/* Premium Elevated Option Buttons */}
         {(exercise.type === 'multiple_choice' || exercise.type === 'fill_blank' || exercise.type === 'listening' || exercise.type === 'true_false') && exercise.options && (
-          <div className="flex flex-col gap-3 max-w-md mx-auto mb-6">
+          <div className="flex flex-col gap-3.5 max-w-lg mx-auto mb-8">
             {exercise.options.map((opt, idx) => {
               const isSelected = selectedOption === opt.text;
               let optionStyle = 'option-btn-default';
@@ -333,10 +333,25 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     soundFx.playClick();
                     setSelectedOption(opt.text);
                   }}
-                  className={`option-btn ${optionStyle}`}
+                  className={`option-btn group ${optionStyle}`}
                 >
-                  <span className="option-label">{idx + 1}</span>
-                  <span className="option-text flex-1 text-base sm:text-lg">{opt.text}</span>
+                  {/* Number keycap badge */}
+                  <span className="option-label group-hover:scale-105 transition-transform">
+                    {idx + 1}
+                  </span>
+                  
+                  {/* Option Text */}
+                  <span className="option-text flex-1 text-base sm:text-lg font-black tracking-wide">
+                    {opt.text}
+                  </span>
+
+                  {/* Status Indicator Icon */}
+                  {feedback !== 'idle' && opt.text === exercise.correctAnswer && (
+                    <Check className="w-6 h-6 text-emerald-600 stroke-[3] animate-bounce" />
+                  )}
+                  {feedback !== 'idle' && isSelected && feedback === 'incorrect' && (
+                    <X className="w-6 h-6 text-rose-600 stroke-[3]" />
+                  )}
                 </button>
               );
             })}
