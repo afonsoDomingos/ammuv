@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { Exercise } from '../types/game';
 import { soundFx } from '../utils/soundFx';
-import { X, Heart, Sparkles, Volume2, Check, RefreshCw, Flag, Flame, Headphones, Turtle } from 'lucide-react';
+import { X, Heart, Sparkles, Volume2, Check, RefreshCw, Flag, Flame, Headphones, Turtle, Zap } from 'lucide-react';
 import { Mascot } from './Mascot';
 
 interface ExerciseCardProps {
@@ -30,11 +30,13 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<'idle' | 'correct' | 'incorrect'>('idle');
   const [showComboBanner, setShowComboBanner] = useState(false);
+  const [floatingXp, setFloatingXp] = useState<number | null>(null);
 
   useEffect(() => {
     setSelectedOption(null);
     setFeedback('idle');
     setShowComboBanner(false);
+    setFloatingXp(null);
 
     if (exercise.type === 'sentence_builder' && exercise.words) {
       const shuffled = [...exercise.words].sort(() => Math.random() - 0.5);
@@ -95,8 +97,12 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 
     if (isCorrect) {
       const nextCombo = currentStreak + 1;
+      const xpGain = 15 + Math.min(nextCombo * 2, 20);
+      
       soundFx.playCorrect(nextCombo);
       setFeedback('correct');
+      setFloatingXp(xpGain);
+
       if (nextCombo >= 2) {
         setShowComboBanner(true);
       }
@@ -118,7 +124,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
     (exercise.type === 'sentence_builder' && selectedWords.length === 0) ||
     ((exercise.type === 'multiple_choice' || exercise.type === 'fill_blank' || exercise.type === 'image_choice' || exercise.type === 'listening' || exercise.type === 'true_false') && !selectedOption);
 
-  // Keyboard Navigation Shortcuts (1, 2, 3, Enter, Space)
+  // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
@@ -150,7 +156,17 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
   }, [exercise, feedback, isCheckDisabled, handleSubmit, onNext]);
 
   return (
-    <div className="exercise-screen-wrapper flex flex-col min-h-[90vh] justify-between pb-32">
+    <div className="exercise-screen-wrapper flex flex-col min-h-[90vh] justify-between pb-32 relative overflow-hidden">
+      
+      {/* Floating Dynamic XP Popup Animation */}
+      {floatingXp && (
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-floatUp">
+          <span className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-amber-400 text-amber-950 font-black text-xl shadow-2xl border-2 border-amber-300">
+            <Zap className="w-6 h-6 fill-amber-950" /> +{floatingXp} XP!
+          </span>
+        </div>
+      )}
+
       {/* Duolingo Top Header */}
       <div className="duo-header max-w-4xl mx-auto w-full px-4 py-3 flex items-center gap-3">
         <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition">
@@ -217,15 +233,14 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           </div>
         )}
 
-        {/* Standard Mascot & Speech Bubble Header (Responsive Stack on Mobile) */}
+        {/* Mascot & Dynamic Speech Bubble */}
         {exercise.type !== 'listening' && exercise.speakerText && (
           <div className="mascot-container flex-col sm:flex-row items-center sm:items-end justify-center mb-8 gap-4">
             <Mascot 
               size="md"
-              mood={feedback === 'correct' ? 'excited' : feedback === 'incorrect' ? 'sad' : 'happy'}
+              mood={feedback === 'correct' ? 'excited' : feedback === 'incorrect' ? 'sad' : selectedOption ? 'wink' : 'happy'}
             />
             <div className="mascot-speech-bubble flex items-center gap-3 max-w-md w-full">
-              {/* Normal speed */}
               <button 
                 onClick={() => speakText(exercise.speakerText!, 0.9)}
                 className="p-2.5 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-600 transition shrink-0"
@@ -234,7 +249,6 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 <Volume2 className="w-5 h-5 text-sky-500" />
               </button>
 
-              {/* Slow turtle speed */}
               <button 
                 onClick={() => speakText(exercise.speakerText!, 0.55)}
                 className="p-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-700 transition shrink-0"
@@ -256,7 +270,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           </div>
         )}
 
-        {/* Image Choice Grid (Responsive 1 col mobile, 3 col desktop) */}
+        {/* Image Choice Grid */}
         {exercise.type === 'image_choice' && exercise.options && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-2xl mx-auto mb-6">
             {exercise.options.map((opt, idx) => {
@@ -379,7 +393,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 
       </div>
 
-      {/* Duolingo Action Bar (Idle Mode) */}
+      {/* Action Bar */}
       {feedback === 'idle' && (
         <div className="card-actions flex items-center justify-between max-w-4xl mx-auto px-4 py-3">
           <button onClick={handleSkip} className="action-btn px-5 sm:px-8 py-3 text-gray-500 font-extrabold border-2 border-gray-200 border-b-4 rounded-2xl hover:bg-gray-100">
@@ -396,7 +410,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
         </div>
       )}
 
-      {/* Duolingo Fixed Feedback Banner */}
+      {/* Feedback Banner */}
       {feedback !== 'idle' && (
         <div className={`feedback-banner-fixed ${feedback === 'correct' ? 'banner-correct' : 'banner-incorrect'}`}>
           <div className="feedback-banner-content max-w-4xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
