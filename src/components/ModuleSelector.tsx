@@ -2,7 +2,7 @@ import React from 'react';
 import type { LearningModule, UserStats } from '../types/game';
 import { Sparkles, ShieldAlert, HelpCircle, Trophy, Lock, Check, Star, Crown } from 'lucide-react';
 import { soundFx } from '../utils/soundFx';
-import { Mascot } from './Mascot';
+import { WelcomeBanner } from './WelcomeBanner';
 
 interface ModuleSelectorProps {
   modules: LearningModule[];
@@ -25,16 +25,17 @@ export const ModuleSelector: React.FC<ModuleSelectorProps> = ({
     }
   };
 
+  const handleStartFirstUnlocked = () => {
+    const firstUnlocked = modules.find((_m, i) => i === 0 || stats.completedModules[modules[i - 1].id] !== undefined);
+    if (firstUnlocked) {
+      onSelectModule(firstUnlocked);
+    }
+  };
+
   return (
     <div className="module-selector-container">
-      {/* Duolingo Mascot Greeting Banner */}
-      <div className="flex justify-center mb-8">
-        <Mascot 
-          mood="happy"
-          size="lg"
-          speechBubble="Olá! Vamos aprender o Verbo To Be hoje? Escolha a primeira lição abaixo!"
-        />
-      </div>
+      {/* Friendly Muv Greeting Banner */}
+      <WelcomeBanner onStart={handleStartFirstUnlocked} />
 
       <div className="hero-banner">
         <h1 className="hero-title">Verbo "To Be" - Trilha de Aprendizado</h1>
