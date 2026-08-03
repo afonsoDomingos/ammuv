@@ -23,69 +23,70 @@ export const Navbar: React.FC<NavbarProps> = ({
   onGoHome
 }) => {
   const currentXpInLevel = stats.xp % 100;
-  const levelProgress = currentXpInLevel; // 0 to 100%
+  const levelProgress = currentXpInLevel;
 
   return (
     <header className="navbar-container">
+      {/* Primary Top Bar */}
       <div className="navbar-content">
-        {/* Brand Logo with Icon + Text */}
-        <div className="brand-logo flex items-center gap-1.5 cursor-pointer shrink-0" onClick={onGoHome} role="button" tabIndex={0}>
+        
+        {/* Brand Logo */}
+        <div className="brand-logo" onClick={onGoHome} role="button" tabIndex={0}>
           <img 
             src="/MUVLOGO.png" 
             alt="MuvLern Logo Icon" 
-            style={{ height: '26px', maxHeight: '26px', width: 'auto' }}
-            className="object-contain drop-shadow-sm hover:scale-105 transition-transform" 
+            className="brand-logo-img" 
           />
-          <span className="logo-text text-lg font-black tracking-tight text-emerald-600 hidden sm:inline">
-            Muv<span className="logo-highlight text-sky-500">Lern</span>
+          <span className="brand-logo-text">
+            Muv<span className="brand-logo-highlight">Lern</span>
           </span>
         </div>
 
         {/* User Stats Bar */}
         <div className="stats-group">
           {/* Level & XP */}
-          <div className="stat-card level-card">
-            <span className="level-badge text-xs">Nv {stats.level}</span>
-            <div className="xp-bar-outer hidden sm:block">
+          <div className="stat-card level-card" title="Nível atual e pontos de XP">
+            <span className="level-badge">Nv {stats.level}</span>
+            <div className="xp-bar-outer">
               <div 
                 className="xp-bar-inner" 
                 style={{ width: `${levelProgress}%` }}
               />
             </div>
-            <span className="xp-text text-xs hidden sm:inline">{stats.xp} XP</span>
+            <span className="xp-text">{stats.xp} XP</span>
           </div>
 
           {/* Streak */}
           <div className="stat-card streak-card" title="Sequência de acertos seguidos!">
-            <Flame className={`w-4 h-4 sm:w-5 sm:h-5 ${stats.streak > 0 ? 'text-amber-500 fill-amber-500 animate-bounce' : 'text-slate-400'}`} />
+            <Flame className={`stat-icon ${stats.streak > 0 ? 'fire-active' : 'fire-inactive'}`} />
             <span className="stat-value">{stats.streak}</span>
           </div>
 
           {/* Hearts */}
           <div className="stat-card heart-card" title="Vidas restantes">
-            <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 fill-red-500" />
+            <Heart className="stat-icon heart-active" />
             <span className="stat-value">{stats.hearts}</span>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="actions-group">
+        {/* Desktop Quick Actions (>= 640px) */}
+        <div className="actions-group desktop-only">
           <button 
             onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
-            className="action-btn ai-btn text-purple-700 font-extrabold border-purple-300 bg-purple-50"
+            className="action-btn ai-btn"
             title="Tutor de Inteligência Artificial Muvy AI"
           >
             <Bot className="w-4 h-4 text-purple-600" />
-            <span className="btn-label hidden lg:inline">Tutor IA</span>
+            <span className="btn-label">Tutor IA</span>
           </button>
 
           <button 
             onClick={() => { soundFx.playClick(); onOpenGrammar(); }}
             className="action-btn grammar-btn"
-            title="Guia Gramatical do Verbo To Be"
+            title="Guia Gramatical"
           >
-            <BookOpen className="w-4 h-4 text-black" />
-            <span className="btn-label hidden lg:inline">Gramática</span>
+            <BookOpen className="w-4 h-4 text-slate-700" />
+            <span className="btn-label">Gramática</span>
           </button>
 
           <button 
@@ -93,8 +94,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="action-btn badge-btn"
             title="Ver Conquistas"
           >
-            <Award className="w-4 h-4 text-black" />
-            <span className="btn-label hidden lg:inline">Conquistas</span>
+            <Award className="w-4 h-4 text-amber-600" />
+            <span className="btn-label">Conquistas</span>
           </button>
 
           <button 
@@ -102,9 +103,43 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="action-btn sound-btn"
             title={isMuted ? "Ativar som" : "Desativar som"}
           >
-            {isMuted ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-black" />}
+            {isMuted ? <VolumeX className="w-4 h-4 text-red-500" /> : <Volume2 className="w-4 h-4 text-slate-700" />}
           </button>
         </div>
+      </div>
+
+      {/* Mobile Sub-Bar Actions (< 640px) */}
+      <div className="mobile-actions-subbar">
+        <button 
+          onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
+          className="subbar-btn subbar-ai"
+        >
+          <Bot className="w-3.5 h-3.5 text-purple-600" />
+          <span>Tutor IA</span>
+        </button>
+
+        <button 
+          onClick={() => { soundFx.playClick(); onOpenGrammar(); }}
+          className="subbar-btn"
+        >
+          <BookOpen className="w-3.5 h-3.5 text-sky-600" />
+          <span>Gramática</span>
+        </button>
+
+        <button 
+          onClick={() => { soundFx.playClick(); onOpenBadges(); }}
+          className="subbar-btn"
+        >
+          <Award className="w-3.5 h-3.5 text-amber-600" />
+          <span>Conquistas</span>
+        </button>
+
+        <button 
+          onClick={onToggleMute}
+          className="subbar-btn subbar-sound"
+        >
+          {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-500" /> : <Volume2 className="w-3.5 h-3.5 text-slate-600" />}
+        </button>
       </div>
     </header>
   );
