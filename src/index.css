@@ -209,6 +209,146 @@ body {
   border-bottom-width: 2px;
 }
 
+/* Welcome Banner 3D Hero Card */
+.welcome-banner-card {
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #0d9488 100%);
+  color: #ffffff;
+  border-radius: 28px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 7px solid #047857;
+  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.75rem;
+  position: relative;
+  z-index: 10;
+}
+
+.welcome-left-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.welcome-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.welcome-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ecfdf5;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-subtitle {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #d1fae5;
+  max-width: 480px;
+  line-height: 1.4;
+  margin-bottom: 0.65rem;
+}
+
+.welcome-highlight {
+  color: #fef08a;
+  text-decoration: underline;
+  text-decoration-color: #fde047;
+  text-decoration-style: wavy;
+}
+
+.welcome-audio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  color: #fef08a;
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0.2rem 0;
+  transition: color 0.15s ease;
+}
+
+.welcome-audio-btn:hover {
+  color: #ffffff;
+}
+
+.welcome-start-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.1rem 2rem;
+  border-radius: 20px;
+  background: #facc15;
+  color: #451a03;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  border: none;
+  border-bottom: 5px solid #d97706;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.welcome-start-btn:hover {
+  background: #fde047;
+  transform: translateY(-2px);
+}
+
+.welcome-start-btn:active {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+}
+
+@media (max-width: 640px) {
+  .welcome-banner-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .welcome-left-group {
+    flex-direction: column;
+    text-align: center;
+  }
+  .welcome-text-group {
+    align-items: center;
+  }
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+}
+
 /* Hero Banner */
 .hero-banner {
   text-align: center;
