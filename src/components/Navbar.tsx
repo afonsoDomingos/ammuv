@@ -28,12 +28,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="navbar-container">
       <div className="navbar-content">
-        {/* Brand Logo with custom MUVLOGO.png */}
+        {/* Small Compact Brand Logo */}
         <div className="brand-logo" onClick={onGoHome} role="button" tabIndex={0}>
           <img 
             src="/MUVLOGO.png" 
             alt="MuvLern Logo" 
-            className="h-6 sm:h-7 w-auto object-contain drop-shadow-sm hover:scale-105 transition-transform" 
+            style={{ height: '24px', maxHeight: '24px', width: 'auto' }}
+            className="object-contain drop-shadow-sm hover:scale-105 transition-transform" 
           />
         </div>
 
