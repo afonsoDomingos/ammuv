@@ -531,18 +531,20 @@ body {
 }
 
 .skill-node-title {
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: var(--text-dark);
   text-align: center;
   background: #ffffff;
-  padding: 0.35rem 0.95rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 12px;
   border: 2px solid var(--border-light);
   border-bottom: 3px solid var(--border-dark);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
-  white-space: nowrap;
+  max-width: 220px;
+  word-break: break-word;
+  line-height: 1.25;
 }
 
 .stars-pill {
