@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { UserStats, LearningModule, Exercise } from './types/game';
-import { VERB_TO_BE_MODULES, GAME_BADGES } from './data/verbToBeData';
+import { ALL_LEARNING_MODULES } from './data/englishTopicsData';
+import { GAME_BADGES } from './data/verbToBeData';
 import { Navbar } from './components/Navbar';
 import { ModuleSelector } from './components/ModuleSelector';
 import { ExerciseCard } from './components/ExerciseCard';
@@ -190,7 +191,7 @@ export function App() {
         {/* Dashboard / Module Path Selection */}
         {!activeModule && stats.hearts > 0 && (
           <ModuleSelector
-            modules={VERB_TO_BE_MODULES}
+            modules={ALL_LEARNING_MODULES}
             stats={stats}
             onSelectModule={handleSelectModule}
           />
@@ -219,9 +220,9 @@ export function App() {
             xpEarned={sessionXpEarned}
             heartsRemaining={stats.hearts}
             onNextModule={() => {
-              const currentIdx = VERB_TO_BE_MODULES.findIndex((m) => m.id === activeModule.id);
-              if (currentIdx + 1 < VERB_TO_BE_MODULES.length) {
-                handleSelectModule(VERB_TO_BE_MODULES[currentIdx + 1]);
+              const currentIdx = ALL_LEARNING_MODULES.findIndex((m: LearningModule) => m.id === activeModule.id);
+              if (currentIdx + 1 < ALL_LEARNING_MODULES.length) {
+                handleSelectModule(ALL_LEARNING_MODULES[currentIdx + 1]);
               } else {
                 handleGoHome();
               }

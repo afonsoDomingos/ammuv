@@ -1,6 +1,26 @@
-export type ExerciseType = 'multiple_choice' | 'sentence_builder' | 'fill_blank' | 'image_choice' | 'true_false' | 'listening';
+export type ExerciseType = 
+  | 'multiple_choice' 
+  | 'sentence_builder' 
+  | 'fill_blank' 
+  | 'image_choice' 
+  | 'true_false' 
+  | 'listening' 
+  | 'pair_matching' 
+  | 'audio_dictation';
 
-export type VerbToBeCategory = 'affirmative' | 'negative' | 'interrogative' | 'mixed';
+export type TopicCategory = 
+  | 'verb_to_be' 
+  | 'food_vocab' 
+  | 'family_house' 
+  | 'travel_places' 
+  | 'jobs_careers' 
+  | 'daily_routine';
+
+export interface MatchingPair {
+  id: string;
+  en: string;
+  pt: string;
+}
 
 export interface OptionItem {
   text: string;
@@ -11,21 +31,32 @@ export interface OptionItem {
 export interface Exercise {
   id: string;
   type: ExerciseType;
-  badgeTag?: string; // e.g. "PALAVRA NOVA", "REVISÃO", "ESCUTE E RESPONDA"
+  badgeTag?: string; // e.g. "PALAVRA NOVA", "REVISÃO", "ESCUTE E RESPONDA", "CORRESPONDA OS PARES"
   question: string;
   speakerText?: string; // Spoken text for audio listening questions
   contextPt?: string; // Translation hint
   options?: OptionItem[];
+  pairs?: MatchingPair[]; // For pair_matching mode
   correctAnswer: string;
   words?: string[]; // Scrambled chips
   explanation: string; // Pedagogical explanation
 }
 
-export interface LearningModule {
-  id: string;
+export interface LearningTopic {
+  id: TopicCategory;
   title: string;
   description: string;
-  category: VerbToBeCategory;
+  icon: string;
+  badgeColor: string;
+  modulesCount: number;
+}
+
+export interface LearningModule {
+  id: string;
+  topicId?: TopicCategory;
+  title: string;
+  description: string;
+  category: string;
   level: number;
   icon: string;
   unlocked: boolean;

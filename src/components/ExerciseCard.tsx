@@ -26,17 +26,27 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
   onClose
 }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [typedInput, setTypedInput] = useState<string>('');
   const [availableWords, setAvailableWords] = useState<string[]>([]);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<'idle' | 'correct' | 'incorrect'>('idle');
   const [showComboBanner, setShowComboBanner] = useState(false);
   const [floatingXp, setFloatingXp] = useState<number | null>(null);
 
+  // State for pair matching
+  const [selectedPairEn, setSelectedPairEn] = useState<string | null>(null);
+  const [selectedPairPt, setSelectedPairPt] = useState<string | null>(null);
+  const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
+
   useEffect(() => {
     setSelectedOption(null);
+    setTypedInput('');
     setFeedback('idle');
     setShowComboBanner(false);
     setFloatingXp(null);
+    setSelectedPairEn(null);
+    setSelectedPairPt(null);
+    setMatchedPairs([]);
 
     if (exercise.type === 'sentence_builder' && exercise.words) {
       const shuffled = [...exercise.words].sort(() => Math.random() - 0.5);
@@ -44,7 +54,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
       setSelectedWords([]);
     }
 
-    if (exercise.type === 'listening' && exercise.speakerText) {
+    if ((exercise.type === 'listening' || exercise.type === 'audio_dictation') && exercise.speakerText) {
       const timer = setTimeout(() => {
         speakText(exercise.speakerText!, 0.9);
       }, 400);
@@ -82,6 +92,48 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
     setAvailableWords([...availableWords, word]);
   };
 
+  // Pair Matching Click Handler
+  const handlePairClick = (item: { type: 'en' | 'pt'; text: string; pairId: string }) => {
+    if (feedback !== 'idle') return;
+    soundFx.playClick();
+
+    if (item.type === 'en') {
+      setSelectedPairEn(item.text);
+      if (selectedPairPt) {
+        checkPairMatch(item.text, selectedPairPt);
+      }
+    } else {
+      setSelectedPairPt(item.text);
+      if (selectedPairEn) {
+        checkPairMatch(selectedPairEn, item.text);
+      }
+    }
+  };
+
+  const checkPairMatch = (enText: string, ptText: string) => {
+    const pair = exercise.pairs?.find((p) => p.en === enText && p.pt === ptText);
+    if (pair) {
+      soundFx.playPop();
+      const newMatched = [...matchedPairs, pair.id];
+      setMatchedPairs(newMatched);
+      setSelectedPairEn(null);
+      setSelectedPairPt(null);
+
+      // If all pairs matched!
+      if (exercise.pairs && newMatched.length === exercise.pairs.length) {
+        const nextCombo = currentStreak + 1;
+        soundFx.playCorrect(nextCombo);
+        setFeedback('correct');
+        setFloatingXp(20);
+        onAnswer(true);
+      }
+    } else {
+      soundFx.playWrong();
+      setSelectedPairEn(null);
+      setSelectedPairPt(null);
+    }
+  };
+
   const handleSubmit = useCallback(() => {
     if (feedback !== 'idle') return;
 
@@ -90,9 +142,13 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
     if (exercise.type === 'multiple_choice' || exercise.type === 'fill_blank' || exercise.type === 'image_choice' || exercise.type === 'listening' || exercise.type === 'true_false') {
       if (!selectedOption) return;
       isCorrect = selectedOption.trim() === exercise.correctAnswer.trim();
+    } else if (exercise.type === 'audio_dictation') {
+      isCorrect = typedInput.trim().toLowerCase() === exercise.correctAnswer.trim().toLowerCase();
     } else if (exercise.type === 'sentence_builder') {
       const constructedSentence = selectedWords.join(' ').trim();
       isCorrect = constructedSentence === exercise.correctAnswer.trim();
+    } else if (exercise.type === 'pair_matching') {
+      isCorrect = matchedPairs.length === (exercise.pairs?.length || 0);
     }
 
     if (isCorrect) {
@@ -112,7 +168,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
       setFeedback('incorrect');
       onAnswer(false);
     }
-  }, [feedback, exercise, selectedOption, selectedWords, currentStreak, onAnswer]);
+  }, [feedback, exercise, selectedOption, typedInput, selectedWords, matchedPairs, currentStreak, onAnswer]);
 
   const handleSkip = () => {
     soundFx.playWrong();
@@ -122,38 +178,9 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 
   const isCheckDisabled =
     (exercise.type === 'sentence_builder' && selectedWords.length === 0) ||
+    (exercise.type === 'audio_dictation' && !typedInput.trim()) ||
+    (exercise.type === 'pair_matching' && matchedPairs.length !== (exercise.pairs?.length || 0)) ||
     ((exercise.type === 'multiple_choice' || exercise.type === 'fill_blank' || exercise.type === 'image_choice' || exercise.type === 'listening' || exercise.type === 'true_false') && !selectedOption);
-
-  // Keyboard Shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-
-      if (feedback === 'idle') {
-        if (e.key === '1' && exercise.options?.[0]) setSelectedOption(exercise.options[0].text);
-        if (e.key === '2' && exercise.options?.[1]) setSelectedOption(exercise.options[1].text);
-        if (e.key === '3' && exercise.options?.[2]) setSelectedOption(exercise.options[2].text);
-        
-        if (e.key === 'Enter' && !isCheckDisabled) {
-          e.preventDefault();
-          handleSubmit();
-        }
-      } else {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          onNext();
-        }
-      }
-
-      if (e.key === ' ' && exercise.speakerText) {
-        e.preventDefault();
-        speakText(exercise.speakerText);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [exercise, feedback, isCheckDisabled, handleSubmit, onNext]);
 
   return (
     <div className="exercise-screen-wrapper flex flex-col min-h-[90vh] justify-between pb-32 relative overflow-hidden">
@@ -167,7 +194,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
         </div>
       )}
 
-      {/* Duolingo Top Header */}
+      {/* Top Header */}
       <div className="duo-header max-w-4xl mx-auto w-full px-4 py-3 flex items-center gap-3">
         <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition">
           <X className="w-6 h-6 stroke-[3]" />
@@ -189,7 +216,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
       {/* Main Content Area */}
       <div className={`exercise-card max-w-3xl mx-auto w-full px-4 sm:px-6 py-2 ${feedback === 'incorrect' ? 'shake-animation' : ''}`}>
         
-        {/* Badge Pill Tag */}
+        {/* Badge Tag */}
         {exercise.badgeTag && (
           <div className="flex justify-center mb-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-purple-100 text-purple-700 uppercase tracking-wider shadow-sm">
@@ -204,37 +231,103 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           {exercise.question}
         </h1>
 
-        {/* Listening Big Speaker Area */}
-        {exercise.type === 'listening' && exercise.speakerText && (
+        {/* Listening / Audio Dictation Header */}
+        {(exercise.type === 'listening' || exercise.type === 'audio_dictation') && exercise.speakerText && (
           <div className="flex flex-col items-center justify-center my-6 gap-3">
             <div className="flex items-center gap-3">
-              {/* Fast audio */}
               <button
                 onClick={() => speakText(exercise.speakerText!, 0.9)}
                 className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-sky-500 hover:bg-sky-600 active:translate-y-1 text-white flex items-center justify-center shadow-lg border-b-4 border-sky-700 transition"
-                title="Ouvir em velocidade normal (1.0x)"
               >
                 <Volume2 className="w-10 h-10 sm:w-12 sm:h-12 animate-pulse" />
               </button>
 
-              {/* Slow audio (Turtle icon 🐢) */}
               <button
                 onClick={() => speakText(exercise.speakerText!, 0.55)}
                 className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-amber-400 hover:bg-amber-500 active:translate-y-1 text-amber-950 flex items-center justify-center shadow-md border-b-4 border-amber-600 transition"
-                title="Ouvir devagar (0.6x)"
               >
                 <Turtle className="w-8 h-8" />
               </button>
             </div>
 
             <span className="text-xs font-extrabold text-sky-600 flex items-center gap-1">
-              <Headphones className="w-3.5 h-3.5" /> Toque para ouvir em alta velocidade ou devagar
+              <Headphones className="w-3.5 h-3.5" /> Toque para ouvir em velocidade normal ou devagar
             </span>
           </div>
         )}
 
-        {/* Mascot & Dynamic Speech Bubble */}
-        {exercise.type !== 'listening' && exercise.speakerText && (
+        {/* Audio Dictation Input Mode */}
+        {exercise.type === 'audio_dictation' && (
+          <div className="max-w-md mx-auto mb-6">
+            <input
+              type="text"
+              value={typedInput}
+              onChange={(e) => setTypedInput(e.target.value)}
+              placeholder="Digite exatamente o que você ouviu..."
+              className="w-full px-5 py-4 text-lg font-black border-2 border-slate-300 rounded-2xl outline-none focus:border-sky-500 transition shadow-inner"
+            />
+          </div>
+        )}
+
+        {/* Pair Matching Mode */}
+        {exercise.type === 'pair_matching' && exercise.pairs && (
+          <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto mb-6">
+            {/* English Column */}
+            <div className="flex flex-col gap-3">
+              <span className="text-xs font-black text-slate-400 uppercase text-center">Inglês</span>
+              {exercise.pairs.map((pair) => {
+                const isMatched = matchedPairs.includes(pair.id);
+                const isSelected = selectedPairEn === pair.en;
+
+                return (
+                  <button
+                    key={pair.id + '-en'}
+                    disabled={isMatched}
+                    onClick={() => handlePairClick({ type: 'en', text: pair.en, pairId: pair.id })}
+                    className={`p-4 rounded-2xl font-black text-base transition border-2 border-b-4 ${
+                      isMatched
+                        ? 'bg-emerald-100 border-emerald-400 text-emerald-700 opacity-50'
+                        : isSelected
+                        ? 'bg-sky-100 border-sky-500 text-sky-800 scale-105'
+                        : 'bg-white border-slate-200 text-slate-800 hover:bg-slate-50'
+                    }`}
+                  >
+                    {pair.en}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Portuguese Column */}
+            <div className="flex flex-col gap-3">
+              <span className="text-xs font-black text-slate-400 uppercase text-center">Português</span>
+              {exercise.pairs.map((pair) => {
+                const isMatched = matchedPairs.includes(pair.id);
+                const isSelected = selectedPairPt === pair.pt;
+
+                return (
+                  <button
+                    key={pair.id + '-pt'}
+                    disabled={isMatched}
+                    onClick={() => handlePairClick({ type: 'pt', text: pair.pt, pairId: pair.id })}
+                    className={`p-4 rounded-2xl font-black text-base transition border-2 border-b-4 ${
+                      isMatched
+                        ? 'bg-emerald-100 border-emerald-400 text-emerald-700 opacity-50'
+                        : isSelected
+                        ? 'bg-sky-100 border-sky-500 text-sky-800 scale-105'
+                        : 'bg-white border-slate-200 text-slate-800 hover:bg-slate-50'
+                    }`}
+                  >
+                    {pair.pt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Mascot & Speech Header */}
+        {exercise.type !== 'listening' && exercise.type !== 'audio_dictation' && exercise.speakerText && (
           <div className="mascot-container flex-col sm:flex-row items-center sm:items-end justify-center mb-8 gap-4">
             <Mascot 
               size="md"
@@ -244,7 +337,6 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <button 
                 onClick={() => speakText(exercise.speakerText!, 0.9)}
                 className="p-2.5 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-600 transition shrink-0"
-                title="Ouvir em velocidade normal"
               >
                 <Volume2 className="w-5 h-5 text-sky-500" />
               </button>
@@ -252,7 +344,6 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <button 
                 onClick={() => speakText(exercise.speakerText!, 0.55)}
                 className="p-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-700 transition shrink-0"
-                title="Ouvir devagar (0.6x)"
               >
                 <Turtle className="w-5 h-5 text-amber-600" />
               </button>
@@ -308,7 +399,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           </div>
         )}
 
-        {/* Premium Elevated Option Buttons */}
+        {/* Multiple Choice List */}
         {(exercise.type === 'multiple_choice' || exercise.type === 'fill_blank' || exercise.type === 'listening' || exercise.type === 'true_false') && exercise.options && (
           <div className="flex flex-col gap-3.5 max-w-lg mx-auto mb-8">
             {exercise.options.map((opt, idx) => {
@@ -335,17 +426,14 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                   }}
                   className={`option-btn group ${optionStyle}`}
                 >
-                  {/* Number keycap badge */}
                   <span className="option-label group-hover:scale-105 transition-transform">
                     {idx + 1}
                   </span>
                   
-                  {/* Option Text */}
                   <span className="option-text flex-1 text-base sm:text-lg font-black tracking-wide">
                     {opt.text}
                   </span>
 
-                  {/* Status Indicator Icon */}
                   {feedback !== 'idle' && opt.text === exercise.correctAnswer && (
                     <Check className="w-6 h-6 text-emerald-600 stroke-[3] animate-bounce" />
                   )}
