@@ -28,14 +28,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="navbar-container">
       <div className="navbar-content">
-        {/* Small Compact Brand Logo */}
-        <div className="brand-logo" onClick={onGoHome} role="button" tabIndex={0}>
+        {/* Brand Logo with Icon + Text */}
+        <div className="brand-logo flex items-center gap-2 cursor-pointer" onClick={onGoHome} role="button" tabIndex={0}>
           <img 
             src="/MUVLOGO.png" 
-            alt="MuvLern Logo" 
-            style={{ height: '24px', maxHeight: '24px', width: 'auto' }}
+            alt="MuvLern Logo Icon" 
+            style={{ height: '28px', maxHeight: '28px', width: 'auto' }}
             className="object-contain drop-shadow-sm hover:scale-105 transition-transform" 
           />
+          <span className="logo-text text-xl font-black tracking-tight text-emerald-600">
+            Muv<span className="logo-highlight text-sky-500">Lern</span>
+          </span>
         </div>
 
         {/* User Stats Bar */}
