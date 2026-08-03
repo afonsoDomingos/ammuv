@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LearningModule, UserStats } from '../types/game';
-import { Sparkles, ShieldAlert, HelpCircle, Trophy, Lock, Check, Star } from 'lucide-react';
+import { Sparkles, ShieldAlert, HelpCircle, Trophy, Lock, Check, Star, Crown } from 'lucide-react';
 import { soundFx } from '../utils/soundFx';
 import { Mascot } from './Mascot';
 
@@ -54,6 +54,12 @@ export const ModuleSelector: React.FC<ModuleSelectorProps> = ({
 
           return (
             <div key={mod.id} className="skill-node-wrapper">
+              {isCompleted && (
+                <div className="crown-badge" title="Coroa de Conclusão!">
+                  <Crown className="w-5 h-5 fill-amber-300 text-amber-600" />
+                </div>
+              )}
+
               <button
                 disabled={!isUnlocked}
                 onClick={() => {
