@@ -34,18 +34,18 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({ onStart }) => {
         
         {/* Mascot & Greeting Text */}
         <div className="welcome-left-group">
-          <Mascot size="lg" mood="wink" />
+          <Mascot size="md" mood="wink" />
 
           <div className="welcome-text-group">
             <span className="welcome-tag-pill">
-              <Sparkles className="w-3.5 h-3.5" /> APRENDA INGLÊS DIVERTINDO-SE
+              <Sparkles className="w-3 h-3" /> APRENDA INGLÊS DIVERTINDO-SE
             </span>
 
-            <h1 className="welcome-title">
+            <h1 className="welcome-title text-xl sm:text-2xl">
               Hello, I'm Muv! 👋
             </h1>
 
-            <p className="welcome-subtitle">
+            <p className="welcome-subtitle text-xs sm:text-sm">
               Pronto para dominar o Verbo <span className="welcome-highlight">"To Be"</span> hoje? Vamos aprender juntos de forma rápida e divertida!
             </p>
 

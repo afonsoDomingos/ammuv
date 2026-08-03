@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <img 
             src="/MUVLOGO.png" 
             alt="MuvLern Logo" 
-            className="h-9 sm:h-11 w-auto object-contain drop-shadow-sm hover:scale-105 transition-transform" 
+            className="h-6 sm:h-7 w-auto object-contain drop-shadow-sm hover:scale-105 transition-transform" 
           />
         </div>
 
