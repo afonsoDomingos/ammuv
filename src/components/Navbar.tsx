@@ -29,14 +29,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="navbar-container">
       <div className="navbar-content">
         {/* Brand Logo with Icon + Text */}
-        <div className="brand-logo flex items-center gap-2 cursor-pointer" onClick={onGoHome} role="button" tabIndex={0}>
+        <div className="brand-logo flex items-center gap-1.5 cursor-pointer shrink-0" onClick={onGoHome} role="button" tabIndex={0}>
           <img 
             src="/MUVLOGO.png" 
             alt="MuvLern Logo Icon" 
-            style={{ height: '28px', maxHeight: '28px', width: 'auto' }}
+            style={{ height: '26px', maxHeight: '26px', width: 'auto' }}
             className="object-contain drop-shadow-sm hover:scale-105 transition-transform" 
           />
-          <span className="logo-text text-xl font-black tracking-tight text-emerald-600">
+          <span className="logo-text text-lg font-black tracking-tight text-emerald-600 hidden sm:inline">
             Muv<span className="logo-highlight text-sky-500">Lern</span>
           </span>
         </div>
@@ -45,14 +45,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="stats-group">
           {/* Level & XP */}
           <div className="stat-card level-card">
-            <span className="level-badge text-xs sm:text-sm">Nv {stats.level}</span>
+            <span className="level-badge text-xs">Nv {stats.level}</span>
             <div className="xp-bar-outer hidden sm:block">
               <div 
                 className="xp-bar-inner" 
                 style={{ width: `${levelProgress}%` }}
               />
             </div>
-            <span className="xp-text text-xs sm:text-sm">{stats.xp} XP</span>
+            <span className="xp-text text-xs hidden sm:inline">{stats.xp} XP</span>
           </div>
 
           {/* Streak */}

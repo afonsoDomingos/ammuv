@@ -50,13 +50,10 @@ export const ModuleSelector: React.FC<ModuleSelectorProps> = ({
       <WelcomeBanner onStart={handleStartFirstUnlocked} />
 
       {/* Topic Switcher Tabs */}
-      <div className="flex flex-col items-center mb-6">
-        <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Escolha o Tópico de Estudo</h2>
-        <TopicSelector 
-          selectedTopicId={selectedTopicId}
-          onSelectTopic={(topicId) => setSelectedTopicId(topicId)}
-        />
-      </div>
+      <TopicSelector 
+        selectedTopicId={selectedTopicId}
+        onSelectTopic={(topicId) => setSelectedTopicId(topicId)}
+      />
 
       <div className="hero-banner">
         <h1 className="hero-title">{currentTopic.title}</h1>
