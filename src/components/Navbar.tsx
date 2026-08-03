@@ -1,7 +1,7 @@
 import React from 'react';
 import type { UserStats } from '../types/game';
 import { soundFx } from '../utils/soundFx';
-import { Volume2, VolumeX, Flame, Heart, BookOpen, Award, Zap, Bot } from 'lucide-react';
+import { Volume2, VolumeX, Flame, Heart, BookOpen, Award, Bot } from 'lucide-react';
 
 interface NavbarProps {
   stats: UserStats;
@@ -28,13 +28,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="navbar-container">
       <div className="navbar-content">
-        {/* Brand Logo */}
+        {/* Brand Logo with custom MUVLOGO.png */}
         <div className="brand-logo" onClick={onGoHome} role="button" tabIndex={0}>
-          <div className="logo-badge">
-            <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400 fill-amber-400" />
-          </div>
-          <span className="logo-text text-xl sm:text-2xl">Muv<span className="logo-highlight">Lern</span></span>
-          <span className="tag-pill hidden md:inline">Verb "To Be"</span>
+          <img 
+            src="/MUVLOGO.png" 
+            alt="MuvLern Logo" 
+            className="h-9 sm:h-11 w-auto object-contain drop-shadow-sm hover:scale-105 transition-transform" 
+          />
         </div>
 
         {/* User Stats Bar */}
