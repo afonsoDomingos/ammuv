@@ -1,13 +1,14 @@
 import React from 'react';
 import type { UserStats } from '../types/game';
 import { soundFx } from '../utils/soundFx';
-import { Volume2, VolumeX, Flame, Heart, BookOpen, Award, Bot } from 'lucide-react';
+import { Volume2, VolumeX, Flame, Heart, BookOpen, Award, Bot, ShieldCheck } from 'lucide-react';
 
 interface NavbarProps {
   stats: UserStats;
   onOpenGrammar: () => void;
   onOpenBadges: () => void;
   onOpenAiTutor: () => void;
+  onOpenAdmin: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
   onGoHome: () => void;
@@ -18,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenGrammar,
   onOpenBadges,
   onOpenAiTutor,
+  onOpenAdmin,
   isMuted,
   onToggleMute,
   onGoHome
@@ -72,6 +74,15 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Desktop Quick Actions (>= 640px) */}
         <div className="actions-group desktop-only">
           <button 
+            onClick={() => { soundFx.playClick(); onOpenAdmin(); }}
+            className="action-btn admin-btn"
+            title="Painel de Administração de Perguntas"
+          >
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <span className="btn-label">Admin</span>
+          </button>
+
+          <button 
             onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
             className="action-btn ai-btn"
             title="Tutor de Inteligência Artificial Muvy AI"
@@ -110,6 +121,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Sub-Bar Actions (< 640px) */}
       <div className="mobile-actions-subbar">
+        <button 
+          onClick={() => { soundFx.playClick(); onOpenAdmin(); }}
+          className="subbar-btn subbar-admin"
+        >
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Admin</span>
+        </button>
+
         <button 
           onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
           className="subbar-btn subbar-ai"

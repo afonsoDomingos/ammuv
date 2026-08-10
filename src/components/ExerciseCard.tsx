@@ -196,8 +196,8 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 
       {/* Top Header */}
       <div className="duo-header max-w-4xl mx-auto w-full px-4 py-3 flex items-center gap-3">
-        <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition">
-          <X className="w-6 h-6 stroke-[3]" />
+        <button onClick={onClose} className="close-btn" title="Fechar Exercício">
+          <X className="w-5 h-5 stroke-[3]" />
         </button>
 
         <div className="progress-track flex-1">
@@ -499,7 +499,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
       {/* Action Bar */}
       {feedback === 'idle' && (
         <div className="card-actions flex items-center justify-between max-w-4xl mx-auto px-4 py-3">
-          <button onClick={handleSkip} className="action-btn px-5 sm:px-8 py-3 text-gray-500 font-extrabold border-2 border-gray-200 border-b-4 rounded-2xl hover:bg-gray-100">
+          <button onClick={handleSkip} className="secondary-btn px-6 sm:px-8">
             PULAR
           </button>
 

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import type { UserStats, LearningModule, Exercise } from './types/game';
-import { ALL_LEARNING_MODULES } from './data/englishTopicsData';
 import { GAME_BADGES } from './data/verbToBeData';
 import { Navbar } from './components/Navbar';
 import { ModuleSelector } from './components/ModuleSelector';
@@ -9,6 +8,8 @@ import { ResultScreen } from './components/ResultScreen';
 import { GrammarModal } from './components/GrammarModal';
 import { AchievementsModal } from './components/AchievementsModal';
 import { AiTutorModal } from './components/AiTutorModal';
+import { AdminModal } from './components/AdminModal';
+import { getCombinedModules } from './services/customQuestionService';
 import { soundFx } from './utils/soundFx';
 
 import { fetchUserStatsFromDb, syncUserStatsToDb } from './services/api';
@@ -25,6 +26,9 @@ const INITIAL_STATS: UserStats = {
 };
 
 export function App() {
+  // Combined Modules State (Natives + Custom Questions)
+  const [allModules, setAllModules] = useState<LearningModule[]>(() => getCombinedModules());
+
   // Persistence in localStorage
   const [stats, setStats] = useState<UserStats>(() => {
     const saved = localStorage.getItem('muvlern_user_stats');
@@ -38,6 +42,7 @@ export function App() {
   const [isGrammarOpen, setIsGrammarOpen] = useState(false);
   const [isBadgesOpen, setIsBadgesOpen] = useState(false);
   const [isAiOpen, setIsAiOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   // Active session state
   const [activeModule, setActiveModule] = useState<LearningModule | null>(null);
@@ -45,6 +50,11 @@ export function App() {
   const [sessionCorrectCount, setSessionCorrectCount] = useState<number>(0);
   const [sessionXpEarned, setSessionXpEarned] = useState<number>(0);
   const [isModuleFinished, setIsModuleFinished] = useState(false);
+
+  // Reload modules when questions are updated in Admin Panel
+  const handleReloadModules = () => {
+    setAllModules(getCombinedModules());
+  };
 
   // Sync with MongoDB on mount
   useEffect(() => {
@@ -166,6 +176,7 @@ export function App() {
         onOpenGrammar={() => setIsGrammarOpen(true)}
         onOpenBadges={() => setIsBadgesOpen(true)}
         onOpenAiTutor={() => setIsAiOpen(true)}
+        onOpenAdmin={() => setIsAdminOpen(true)}
         isMuted={isMuted}
         onToggleMute={handleToggleMute}
         onGoHome={handleGoHome}
@@ -191,7 +202,7 @@ export function App() {
         {/* Dashboard / Module Path Selection */}
         {!activeModule && stats.hearts > 0 && (
           <ModuleSelector
-            modules={ALL_LEARNING_MODULES}
+            modules={allModules}
             stats={stats}
             onSelectModule={handleSelectModule}
           />
@@ -220,9 +231,9 @@ export function App() {
             xpEarned={sessionXpEarned}
             heartsRemaining={stats.hearts}
             onNextModule={() => {
-              const currentIdx = ALL_LEARNING_MODULES.findIndex((m: LearningModule) => m.id === activeModule.id);
-              if (currentIdx + 1 < ALL_LEARNING_MODULES.length) {
-                handleSelectModule(ALL_LEARNING_MODULES[currentIdx + 1]);
+              const currentIdx = allModules.findIndex((m: LearningModule) => m.id === activeModule.id);
+              if (currentIdx + 1 < allModules.length) {
+                handleSelectModule(allModules[currentIdx + 1]);
               } else {
                 handleGoHome();
               }
@@ -248,6 +259,12 @@ export function App() {
       <AiTutorModal
         isOpen={isAiOpen}
         onClose={() => setIsAiOpen(false)}
+      />
+
+      <AdminModal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        onQuestionsUpdated={handleReloadModules}
       />
     </div>
   );
