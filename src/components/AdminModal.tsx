@@ -22,7 +22,9 @@ import {
   FileText,
   Copy,
   Lock,
-  Key
+  Key,
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 
 interface AdminModalProps {
@@ -109,64 +111,79 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   if (!isUnlocked) {
     return (
       <div className="modal-backdrop" onClick={onClose}>
-        <div className="modal-card max-w-md" onClick={(e) => e.stopPropagation()}>
-          <div className="modal-header bg-slate-900 text-white rounded-t-[26px]">
+        <div className="modal-card max-w-md bg-slate-900 border-2 border-slate-700 border-b-8 border-slate-950 text-white rounded-[28px] shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          
+          {/* Header */}
+          <div className="p-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-500 rounded-xl text-white shadow-md">
-                <Lock className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shadow-inner">
+                <ShieldCheck className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
-                <h2 className="modal-title text-white">Painel do Administrador</h2>
-                <p className="text-xs text-slate-400 font-bold">Acesso Restrito</p>
+                <h2 className="font-black text-lg text-white font-['Outfit'] tracking-wide">Painel do Administrador</h2>
+                <p className="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Área Restrita & Gestão
+                </p>
               </div>
             </div>
-            <button className="close-btn" onClick={() => { soundFx.playClick(); onClose(); }}>
+            
+            <button className="close-btn" onClick={() => { soundFx.playClick(); onClose(); }} title="Fechar">
               <X className="w-5 h-5 text-slate-700" />
             </button>
           </div>
 
-          <form onSubmit={handleLogin} className="p-6 space-y-4 bg-slate-50">
+          {/* Form Content */}
+          <form onSubmit={handleLogin} className="p-6 space-y-5 bg-slate-900/95">
             <div className="text-center space-y-2">
-              <div className="w-14 h-14 mx-auto rounded-full bg-emerald-100 border-2 border-emerald-300 flex items-center justify-center text-emerald-700">
-                <Key className="w-7 h-7" />
+              <div className="w-16 h-16 mx-auto rounded-3xl bg-gradient-to-b from-emerald-400 to-emerald-600 text-slate-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 border-b-4 border-emerald-700">
+                <Key className="w-8 h-8 stroke-[2.5]" />
               </div>
-              <h3 className="font-black text-lg text-slate-800">Identificação de Administrador</h3>
-              <p className="text-xs font-bold text-slate-500">
-                Digite a senha de administrador para gerenciar o banco de questões.
+              <h3 className="font-black text-xl text-white font-['Outfit']">Identificação Requerida</h3>
+              <p className="text-xs font-bold text-slate-400 leading-relaxed max-w-xs mx-auto">
+                Digite a senha de acesso para gerenciar e cadastrar questões no aplicativo.
               </p>
             </div>
 
-            <div className="p-3 bg-emerald-50 border-2 border-emerald-200 rounded-2xl text-xs font-bold text-emerald-900 space-y-1">
-              <p className="flex items-center gap-1 font-black text-emerald-800">
-                <Sparkles className="w-4 h-4 text-emerald-600" /> Credenciais de Acesso:
+            {/* Credenciais Badge Card */}
+            <div className="p-4 bg-slate-800/80 border-2 border-slate-700/80 rounded-2xl text-xs space-y-2">
+              <p className="flex items-center gap-1.5 font-black text-amber-400 uppercase tracking-wider text-[11px]">
+                <Sparkles className="w-3.5 h-3.5 fill-amber-400" /> Credenciais Demonstrativas
               </p>
-              <p>• <strong>Senha Padrão:</strong> <code className="bg-white px-2 py-0.5 rounded border border-emerald-300 font-black">admin123</code></p>
-              <p>• <strong>PIN Rápido:</strong> <code className="bg-white px-2 py-0.5 rounded border border-emerald-300 font-black">1234</code></p>
+              <div className="grid grid-cols-2 gap-2 text-slate-200 font-bold">
+                <div className="p-2.5 bg-slate-900/90 rounded-xl border border-slate-700 text-center">
+                  <span className="text-[10px] text-slate-400 uppercase block font-black mb-0.5">Senha</span>
+                  <code className="text-emerald-400 font-black text-sm">admin123</code>
+                </div>
+                <div className="p-2.5 bg-slate-900/90 rounded-xl border border-slate-700 text-center">
+                  <span className="text-[10px] text-slate-400 uppercase block font-black mb-0.5">PIN</span>
+                  <code className="text-amber-400 font-black text-sm">1234</code>
+                </div>
+              </div>
             </div>
 
             {loginError && (
-              <div className="p-3 bg-rose-100 border border-rose-300 text-rose-700 rounded-xl text-xs font-black text-center">
+              <div className="p-3 bg-rose-500/20 border-2 border-rose-500/40 text-rose-300 rounded-xl text-xs font-black text-center animate-shake">
                 {loginError}
               </div>
             )}
 
-            <div>
-              <label className="block text-xs font-black text-slate-600 uppercase mb-1">
-                Senha / PIN
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-wider">
+                Senha ou PIN de Acesso
               </label>
               <input
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
                 placeholder="Digite admin123 ou 1234..."
-                className="w-full p-3 rounded-xl border-2 border-slate-200 font-extrabold text-base outline-none focus:border-emerald-500 bg-white"
+                className="w-full px-4 py-3.5 rounded-2xl bg-slate-800 border-2 border-slate-700 text-white font-extrabold text-base outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all placeholder:text-slate-500"
                 autoFocus
               />
             </div>
 
-            <div className="space-y-2 pt-2">
-              <button type="submit" className="primary-btn w-full py-3 text-base">
-                <Lock className="w-4 h-4" /> Entrar no Painel Admin
+            <div className="space-y-2.5 pt-1">
+              <button type="submit" className="primary-btn w-full py-3.5 text-base shadow-lg shadow-emerald-500/20">
+                <Lock className="w-5 h-5" /> Entrar no Painel Admin
               </button>
 
               <button
@@ -175,9 +192,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   setPasswordInput('admin123');
                   setTimeout(() => handleLogin(), 100);
                 }}
-                className="secondary-btn w-full py-2.5 text-xs text-emerald-700 border-emerald-200"
+                className="w-full py-3 px-4 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 active:translate-y-0.5 text-emerald-400 font-black text-xs border-2 border-emerald-500/30 border-b-4 transition flex items-center justify-center gap-2"
               >
-                ⚡ Preencher & Logar Automaticamente
+                <Zap className="w-4 h-4 fill-emerald-400" /> Preencher & Entrar Automaticamente
               </button>
             </div>
           </form>
