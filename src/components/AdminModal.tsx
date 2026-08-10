@@ -24,7 +24,8 @@ import {
   Lock,
   Key,
   ShieldCheck,
-  Zap
+  Zap,
+  LogOut
 } from 'lucide-react';
 
 interface AdminModalProps {
@@ -103,6 +104,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       soundFx.playWrong();
       setLoginError('Senha incorreta! Use: admin123 ou PIN: 1234');
     }
+  };
+
+  const handleLogout = () => {
+    soundFx.playClick();
+    sessionStorage.removeItem('muvlern_admin_unlocked');
+    setIsUnlocked(false);
+    setPasswordInput('');
   };
 
   if (!isOpen) return null;
@@ -414,13 +422,23 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               <p className="text-xs text-emerald-400 font-extrabold">Gerenciador de Perguntas & Exercícios</p>
             </div>
           </div>
-          <button 
-            className="close-btn"
-            onClick={() => { soundFx.playClick(); onClose(); }}
-            title="Fechar"
-          >
-            <X className="w-5 h-5 text-slate-700" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={handleLogout}
+              className="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-extrabold text-xs border border-rose-500/40 transition flex items-center gap-1.5"
+              title="Fazer Logout do Painel Admin"
+            >
+              <LogOut className="w-3.5 h-3.5" /> Sair
+            </button>
+
+            <button 
+              className="close-btn"
+              onClick={() => { soundFx.playClick(); onClose(); }}
+              title="Fechar"
+            >
+              <X className="w-5 h-5 text-slate-700" />
+            </button>
+          </div>
         </div>
 
         {/* Feedback Alert Toast */}
@@ -888,9 +906,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
             <Sparkles className="w-4 h-4 text-emerald-500 fill-emerald-500" /> MuvLern Admin System
           </span>
-          <button className="secondary-btn text-xs px-5 py-2" onClick={() => { soundFx.playClick(); onClose(); }}>
-            Fechar Painel
-          </button>
+          <div className="flex items-center gap-2">
+            <button className="secondary-btn text-xs px-4 py-2 text-rose-600 border-rose-200" onClick={handleLogout}>
+              <LogOut className="w-3.5 h-3.5 text-rose-600" /> Sair
+            </button>
+            <button className="secondary-btn text-xs px-5 py-2" onClick={() => { soundFx.playClick(); onClose(); }}>
+              Fechar Painel
+            </button>
+          </div>
         </div>
 
       </div>
