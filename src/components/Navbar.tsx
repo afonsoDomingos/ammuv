@@ -74,12 +74,21 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Desktop Quick Actions (>= 640px) */}
         <div className="actions-group desktop-only">
           <button 
-            onClick={() => { soundFx.playClick(); onOpenAdmin(); }}
-            className="action-btn admin-btn"
-            title="Painel de Administração de Perguntas"
+            onClick={() => { soundFx.playClick(); onOpenGrammar(); }}
+            className="action-btn grammar-btn"
+            title="Guia Gramatical"
           >
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span className="btn-label">Admin</span>
+            <BookOpen className="w-4 h-4 text-sky-600" />
+            <span className="btn-label">Gramática</span>
+          </button>
+
+          <button 
+            onClick={() => { soundFx.playClick(); onOpenBadges(); }}
+            className="action-btn badge-btn"
+            title="Ver Conquistas"
+          >
+            <Award className="w-4 h-4 text-amber-600" />
+            <span className="btn-label">Conquistas</span>
           </button>
 
           <button 
@@ -92,21 +101,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <button 
-            onClick={() => { soundFx.playClick(); onOpenGrammar(); }}
-            className="action-btn grammar-btn"
-            title="Guia Gramatical"
+            onClick={() => { soundFx.playClick(); onOpenAdmin(); }}
+            className="action-btn admin-btn"
+            title="Painel de Administração de Perguntas"
           >
-            <BookOpen className="w-4 h-4 text-slate-700" />
-            <span className="btn-label">Gramática</span>
-          </button>
-
-          <button 
-            onClick={() => { soundFx.playClick(); onOpenBadges(); }}
-            className="action-btn badge-btn"
-            title="Ver Conquistas"
-          >
-            <Award className="w-4 h-4 text-amber-600" />
-            <span className="btn-label">Conquistas</span>
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <span className="btn-label">Admin</span>
           </button>
 
           <button 
@@ -122,22 +122,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Sub-Bar Actions (< 640px) */}
       <div className="mobile-actions-subbar">
         <button 
-          onClick={() => { soundFx.playClick(); onOpenAdmin(); }}
-          className="subbar-btn subbar-admin"
-        >
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Admin</span>
-        </button>
-
-        <button 
-          onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
-          className="subbar-btn subbar-ai"
-        >
-          <Bot className="w-3.5 h-3.5 text-purple-600" />
-          <span>Tutor IA</span>
-        </button>
-
-        <button 
           onClick={() => { soundFx.playClick(); onOpenGrammar(); }}
           className="subbar-btn"
         >
@@ -151,6 +135,22 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <Award className="w-3.5 h-3.5 text-amber-600" />
           <span>Conquistas</span>
+        </button>
+
+        <button 
+          onClick={() => { soundFx.playClick(); onOpenAiTutor(); }}
+          className="subbar-btn subbar-ai"
+        >
+          <Bot className="w-3.5 h-3.5 text-purple-600" />
+          <span>Tutor IA</span>
+        </button>
+
+        <button 
+          onClick={() => { soundFx.playClick(); onOpenAdmin(); }}
+          className="subbar-btn subbar-admin"
+        >
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Admin</span>
         </button>
 
         <button 
