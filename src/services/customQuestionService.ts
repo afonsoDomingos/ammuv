@@ -110,7 +110,18 @@ export function getCombinedModules(): LearningModule[] {
 
   // Merge custom exercises into respective target modules
   customItems.forEach(custom => {
-    const targetModule = modulesCopy.find(m => m.id === custom.moduleId);
+    let targetModule = modulesCopy.find(m => m.id === custom.moduleId);
+
+    // Fallback 1: match by topicId if module ID was not directly matched
+    if (!targetModule && custom.topicId) {
+      targetModule = modulesCopy.find(m => m.topicId === custom.topicId || (!m.topicId && custom.topicId === 'verb_to_be'));
+    }
+
+    // Fallback 2: fallback to first module if no specific module matched
+    if (!targetModule && modulesCopy.length > 0) {
+      targetModule = modulesCopy[0];
+    }
+
     if (targetModule) {
       // Check if question already exists to prevent duplication
       const exists = targetModule.exercises.some(e => e.id === custom.question.id);
