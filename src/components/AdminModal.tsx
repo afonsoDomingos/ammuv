@@ -399,24 +399,25 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-card max-w-3xl h-[85vh]" onClick={(e) => e.stopPropagation()}>
+      <div className="admin-modal-card" onClick={(e) => e.stopPropagation()}>
         
         {/* Header */}
-        <div className="modal-header bg-slate-900 text-white rounded-t-[26px]">
+        <div className="admin-modal-header">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-emerald-500 rounded-xl text-white shadow-md">
-              <Sparkles className="w-5 h-5" />
+              <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="modal-title text-white flex items-center gap-2">
+              <h2 className="modal-title text-white font-['Outfit']">
                 Painel do Administrador
               </h2>
-              <p className="text-xs text-slate-400 font-bold">Gerenciador de Perguntas & Exercícios</p>
+              <p className="text-xs text-emerald-400 font-extrabold">Gerenciador de Perguntas & Exercícios</p>
             </div>
           </div>
           <button 
             className="close-btn"
             onClick={() => { soundFx.playClick(); onClose(); }}
+            title="Fechar"
           >
             <X className="w-5 h-5 text-slate-700" />
           </button>
@@ -424,7 +425,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
         {/* Feedback Alert Toast */}
         {feedbackMsg && (
-          <div className={`px-4 py-2.5 text-xs font-black text-center ${
+          <div className={`px-4 py-3 text-xs font-black text-center shadow-md ${
             feedbackMsg.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
           }`}>
             {feedbackMsg.text}
@@ -432,7 +433,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         )}
 
         {/* Navigation Tabs */}
-        <div className="grammar-tabs bg-slate-100 border-b border-slate-200">
+        <div className="grammar-tabs bg-slate-100 border-b-2 border-slate-200 p-2">
           <button 
             className={`tab-btn flex items-center justify-center gap-2 ${activeTab === 'create' ? 'active' : ''}`}
             onClick={() => { soundFx.playClick(); setActiveTab('create'); }}
@@ -460,52 +461,54 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
           {/* TAB 1: CREATE QUESTION FORM */}
           {activeTab === 'create' && (
-            <form onSubmit={handleCreateQuestion} className="space-y-5">
+            <form onSubmit={handleCreateQuestion} className="space-y-4">
               
-              {/* Topic & Module Pickers */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm">
-                <div>
-                  <label className="block text-xs font-black text-slate-600 uppercase mb-1.5">
-                    1. Escolha o Tópico
-                  </label>
-                  <select
-                    value={selectedTopic}
-                    onChange={(e) => {
-                      const topId = e.target.value as TopicCategory;
-                      setSelectedTopic(topId);
-                      const mods = ALL_LEARNING_MODULES.filter(m => m.topicId === topId || (!m.topicId && topId === 'verb_to_be'));
-                      if (mods.length > 0) setSelectedModuleId(mods[0].id);
-                    }}
-                    className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500 bg-white"
-                  >
-                    {TOPIC_CATEGORIES.map(t => (
-                      <option key={t.id} value={t.id}>{t.title}</option>
-                    ))}
-                  </select>
-                </div>
+              {/* Topic & Module Pickers Card */}
+              <div className="admin-card-section">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="admin-label">
+                      1. Escolha o Tópico
+                    </label>
+                    <select
+                      value={selectedTopic}
+                      onChange={(e) => {
+                        const topId = e.target.value as TopicCategory;
+                        setSelectedTopic(topId);
+                        const mods = ALL_LEARNING_MODULES.filter(m => m.topicId === topId || (!m.topicId && topId === 'verb_to_be'));
+                        if (mods.length > 0) setSelectedModuleId(mods[0].id);
+                      }}
+                      className="admin-select"
+                    >
+                      {TOPIC_CATEGORIES.map(t => (
+                        <option key={t.id} value={t.id}>{t.title}</option>
+                      ))}
+                    </select>
+                  </div>
 
-                <div>
-                  <label className="block text-xs font-black text-slate-600 uppercase mb-1.5">
-                    2. Escolha o Módulo Destino
-                  </label>
-                  <select
-                    value={selectedModuleId}
-                    onChange={(e) => setSelectedModuleId(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500 bg-white"
-                  >
-                    {availableModules.map(m => (
-                      <option key={m.id} value={m.id}>{m.title}</option>
-                    ))}
-                  </select>
+                  <div>
+                    <label className="admin-label">
+                      2. Escolha o Módulo Destino
+                    </label>
+                    <select
+                      value={selectedModuleId}
+                      onChange={(e) => setSelectedModuleId(e.target.value)}
+                      className="admin-select"
+                    >
+                      {availableModules.map(m => (
+                        <option key={m.id} value={m.id}>{m.title}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              {/* Exercise Modality Picker */}
-              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm">
-                <label className="block text-xs font-black text-slate-600 uppercase mb-2">
+              {/* Exercise Modality Picker Card */}
+              <div className="admin-card-section">
+                <label className="admin-label mb-3">
                   3. Modalidade da Questão (Tipo de Exercício)
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="admin-modality-grid">
                   {[
                     { id: 'multiple_choice', label: 'Múltipla Escolha', icon: '📝' },
                     { id: 'sentence_builder', label: 'Montar Frase', icon: '🧩' },
@@ -520,23 +523,19 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                       type="button"
                       key={mod.id}
                       onClick={() => setExerciseType(mod.id as ExerciseType)}
-                      className={`p-2.5 rounded-xl font-black text-xs border-2 text-center transition flex flex-col items-center gap-1 ${
-                        exerciseType === mod.id
-                          ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm'
-                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                      }`}
+                      className={`admin-modality-btn ${exerciseType === mod.id ? 'active' : ''}`}
                     >
-                      <span className="text-lg">{mod.icon}</span>
+                      <span className="text-xl">{mod.icon}</span>
                       <span>{mod.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Question Enunciado & Common Fields */}
-              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm space-y-4">
+              {/* Question Enunciado & Common Fields Card */}
+              <div className="admin-card-section space-y-4">
                 <div>
-                  <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                  <label className="admin-label">
                     Enunciado da Pergunta *
                   </label>
                   <input
@@ -544,14 +543,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     value={questionText}
                     onChange={(e) => setQuestionText(e.target.value)}
                     placeholder="Ex: Como se diz 'Eu sou um estudante' em inglês?"
-                    className="w-full p-3 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                    className="admin-input"
                     required
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                    <label className="admin-label">
                       Áudio Pronunciado (speakerText)
                     </label>
                     <input
@@ -559,18 +558,18 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                       value={speakerText}
                       onChange={(e) => setSpeakerText(e.target.value)}
                       placeholder="Ex: I am a student."
-                      className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                      className="admin-input"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                    <label className="admin-label">
                       Tag / Badge da Pergunta
                     </label>
                     <select
                       value={badgeTag}
                       onChange={(e) => setBadgeTag(e.target.value)}
-                      className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500 bg-white"
+                      className="admin-select"
                     >
                       <option value="PALAVRA NOVA">PALAVRA NOVA 🌟</option>
                       <option value="REVISÃO">REVISÃO 🔄</option>
@@ -583,8 +582,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 </div>
               </div>
 
-              {/* DYNAMIC FORM PER MODALITY */}
-              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm space-y-4">
+              {/* DYNAMIC FORM PER MODALITY CARD */}
+              <div className="admin-card-section space-y-4">
                 <h4 className="text-xs font-black text-purple-700 uppercase tracking-wider">
                   Configuração Específica: {exerciseType.toUpperCase()}
                 </h4>
@@ -593,16 +592,16 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 {(exerciseType === 'multiple_choice' || exerciseType === 'fill_blank' || exerciseType === 'listening') && (
                   <div className="space-y-3">
                     <p className="text-xs font-bold text-slate-500">
-                      Digite as opções e marque a caixa da <strong>resposta correta</strong>:
+                      Digite as opções e selecione o botão de opção da <strong>resposta correta</strong>:
                     </p>
                     {options.map((opt, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
+                      <div key={idx} className="admin-option-row">
                         <input
                           type="radio"
                           name="correctOption"
                           checked={correctOptionIdx === idx}
                           onChange={() => setCorrectOptionIdx(idx)}
-                          className="w-5 h-5 accent-emerald-600 cursor-pointer"
+                          className="admin-radio"
                         />
                         <span className="font-black text-xs text-slate-500 w-6">#{idx + 1}</span>
                         <input
@@ -614,7 +613,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                             setOptions(newOpts);
                           }}
                           placeholder={`Opção ${idx + 1}`}
-                          className="flex-1 p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                          className="admin-input flex-1"
                         />
                       </div>
                     ))}
@@ -623,9 +622,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
                 {/* 2. SENTENCE BUILDER */}
                 {exerciseType === 'sentence_builder' && (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                      <label className="admin-label">
                         Banco de Palavras (separadas por vírgula)
                       </label>
                       <input
@@ -633,12 +632,12 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         value={sentenceWords}
                         onChange={(e) => setSentenceWords(e.target.value)}
                         placeholder="I, am, happy, today, is, you"
-                        className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                        className="admin-input"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                      <label className="admin-label">
                         Frase Correta Esperada
                       </label>
                       <input
@@ -646,7 +645,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         value={sentenceCorrect}
                         onChange={(e) => setSentenceCorrect(e.target.value)}
                         placeholder="I am happy today"
-                        className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                        className="admin-input"
                       />
                     </div>
                   </div>
@@ -656,13 +655,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 {exerciseType === 'image_choice' && (
                   <div className="space-y-3">
                     {imageOptions.map((opt, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
+                      <div key={idx} className="admin-option-row">
                         <input
                           type="radio"
                           name="correctImgOption"
                           checked={imageCorrectIdx === idx}
                           onChange={() => setImageCorrectIdx(idx)}
-                          className="w-5 h-5 accent-emerald-600 cursor-pointer"
+                          className="admin-radio"
                         />
                         <input
                           type="text"
@@ -672,8 +671,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                             newOpts[idx].icon = e.target.value;
                             setImageOptions(newOpts);
                           }}
-                          placeholder="Ícone/Emoji (ex: 🍎)"
-                          className="w-20 p-2.5 rounded-xl border-2 border-slate-200 text-center font-black text-xl"
+                          placeholder="Ícone (ex: 🍎)"
+                          className="admin-input w-24 text-center font-black text-xl"
                         />
                         <input
                           type="text"
@@ -684,7 +683,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                             setImageOptions(newOpts);
                           }}
                           placeholder="Nome da Opção (ex: Apple)"
-                          className="flex-1 p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                          className="admin-input flex-1"
                         />
                       </div>
                     ))}
@@ -693,7 +692,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
                 {/* 4. TRUE / FALSE */}
                 {exerciseType === 'true_false' && (
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-6 p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl">
                     <label className="flex items-center gap-2 font-black text-sm text-slate-700 cursor-pointer">
                       <input
                         type="radio"
@@ -701,7 +700,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         value="True"
                         checked={tfCorrect === 'True'}
                         onChange={() => setTfCorrect('True')}
-                        className="w-5 h-5 accent-emerald-600"
+                        className="admin-radio"
                       />
                       ✅ Verdadeiro (True)
                     </label>
@@ -713,7 +712,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         value="False"
                         checked={tfCorrect === 'False'}
                         onChange={() => setTfCorrect('False')}
-                        className="w-5 h-5 accent-rose-600"
+                        className="admin-radio"
                       />
                       ❌ Falso (False)
                     </label>
@@ -723,9 +722,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 {/* 5. PAIR MATCHING */}
                 {exerciseType === 'pair_matching' && (
                   <div className="space-y-3">
-                    <p className="text-xs font-bold text-slate-500">Cadastre os pares em inglês e português:</p>
+                    <p className="text-xs font-bold text-slate-500 mb-2">Cadastre os pares em inglês e português:</p>
                     {pairs.map((p, idx) => (
-                      <div key={p.id} className="grid grid-cols-2 gap-2">
+                      <div key={p.id} className="grid grid-cols-2 gap-3">
                         <input
                           type="text"
                           value={p.en}
@@ -735,7 +734,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                             setPairs(newPairs);
                           }}
                           placeholder={`Inglês #${idx + 1}`}
-                          className="p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm"
+                          className="admin-input"
                         />
                         <input
                           type="text"
@@ -746,7 +745,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                             setPairs(newPairs);
                           }}
                           placeholder={`Português #${idx + 1}`}
-                          className="p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm"
+                          className="admin-input"
                         />
                       </div>
                     ))}
@@ -755,9 +754,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
                 {/* 6. AUDIO DICTATION */}
                 {exerciseType === 'audio_dictation' && (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                      <label className="admin-label">
                         Áudio a ser falado pelo sintetizador
                       </label>
                       <input
@@ -765,11 +764,11 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         value={speakerText}
                         onChange={(e) => setSpeakerText(e.target.value)}
                         placeholder="Ex: Good morning, how are you?"
-                        className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm"
+                        className="admin-input"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                      <label className="admin-label">
                         Resposta Exata Esperada do Aluno
                       </label>
                       <input
@@ -777,30 +776,30 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         value={sentenceCorrect}
                         onChange={(e) => setSentenceCorrect(e.target.value)}
                         placeholder="Ex: Good morning, how are you?"
-                        className="w-full p-2.5 rounded-xl border-2 border-slate-200 font-extrabold text-sm"
+                        className="admin-input"
                       />
                     </div>
                   </div>
                 )}
 
                 {/* Explanation Field */}
-                <div>
-                  <label className="block text-xs font-black text-slate-600 uppercase mb-1">
+                <div className="pt-2">
+                  <label className="admin-label">
                     Explicação Pedagógica (exibida após resposta)
                   </label>
                   <textarea
-                    rows={2}
+                    rows={3}
                     value={explanation}
                     onChange={(e) => setExplanation(e.target.value)}
                     placeholder="Ex: Usamos 'AM' sempre que o sujeito for 'I' (Eu)."
-                    className="w-full p-3 rounded-xl border-2 border-slate-200 font-extrabold text-sm outline-none focus:border-emerald-500"
+                    className="admin-textarea"
                   />
                 </div>
               </div>
 
               {/* Submit Button */}
-              <button type="submit" className="primary-btn w-full py-3.5 text-base">
-                <PlusCircle className="w-5 h-5" /> Adicionar Pergunta Manualmente
+              <button type="submit" className="primary-btn w-full py-4 text-base shadow-lg">
+                <PlusCircle className="w-5 h-5" /> ADICIONAR PERGUNTA MANUALMENTE
               </button>
             </form>
           )}
@@ -809,17 +808,17 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           {activeTab === 'manage' && (
             <div className="space-y-4">
               {customQuestionsList.length === 0 ? (
-                <div className="text-center py-12 text-slate-400">
-                  <HelpCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                  <p className="font-extrabold text-base">Nenhuma pergunta manual cadastrada ainda.</p>
-                  <p className="text-xs">Use a aba "Criar Pergunta" para adicionar seus próprios exercícios!</p>
+                <div className="text-center py-16 text-slate-400">
+                  <HelpCircle className="w-14 h-14 mx-auto mb-3 opacity-40" />
+                  <p className="font-black text-lg text-slate-700">Nenhuma pergunta manual cadastrada ainda.</p>
+                  <p className="text-xs font-bold mt-1">Use a aba "Criar Pergunta" para adicionar seus próprios exercícios!</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {customQuestionsList.map((item) => (
                     <div 
                       key={item.question.id}
-                      className="p-4 bg-white rounded-2xl border-2 border-slate-200 border-b-4 flex items-center justify-between gap-3 shadow-sm"
+                      className="admin-card-section flex items-center justify-between gap-4 mb-0"
                     >
                       <div className="flex-1 space-y-1">
                         <div className="flex items-center gap-2">
@@ -830,7 +829,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                             Módulo: {item.moduleId}
                           </span>
                         </div>
-                        <h4 className="font-black text-sm text-slate-800">{item.question.question}</h4>
+                        <h4 className="font-black text-base text-slate-800">{item.question.question}</h4>
                         <p className="text-xs font-bold text-emerald-600">
                           Resposta correta: {item.question.correctAnswer}
                         </p>
@@ -838,7 +837,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
                       <button
                         onClick={() => handleDeleteQuestion(item.question.id)}
-                        className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition shrink-0"
+                        className="p-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition shrink-0"
                         title="Remover Pergunta"
                       >
                         <Trash2 className="w-5 h-5" />
@@ -853,11 +852,11 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           {/* TAB 3: JSON IMPORT / EXPORT */}
           {activeTab === 'json' && (
             <div className="space-y-4">
-              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3">
-                <h4 className="font-black text-sm text-slate-800 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-purple-600" /> Exportar ou Importar em JSON
+              <div className="admin-card-section space-y-4">
+                <h4 className="font-black text-base text-slate-800 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-purple-600" /> Exportar ou Importar em JSON
                 </h4>
-                <p className="text-xs font-bold text-slate-500">
+                <p className="text-xs font-bold text-slate-500 leading-relaxed">
                   Você pode salvar em arquivo ou transferir suas perguntas customizadas entre diferentes navegadores:
                 </p>
 
@@ -866,15 +865,15 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   value={jsonString}
                   onChange={(e) => setJsonString(e.target.value)}
                   placeholder="Cole o código JSON de perguntas aqui..."
-                  className="w-full p-3 rounded-xl border-2 border-slate-200 font-mono text-xs outline-none focus:border-purple-500"
+                  className="admin-textarea font-mono text-xs"
                 />
 
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <button onClick={handleExportJson} className="secondary-btn flex-1 py-2.5 text-xs">
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button onClick={handleExportJson} className="secondary-btn flex-1 py-3 text-xs">
                     <Copy className="w-4 h-4" /> Gerar & Copiar JSON
                   </button>
 
-                  <button onClick={handleImportJson} className="primary-btn flex-1 py-2.5 text-xs">
+                  <button onClick={handleImportJson} className="primary-btn flex-1 py-3 text-xs">
                     <Upload className="w-4 h-4" /> Importar Perguntas do JSON
                   </button>
                 </div>
@@ -886,8 +885,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
         {/* Footer */}
         <div className="modal-footer justify-between">
-          <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-500" /> MuvLern Admin System
+          <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-emerald-500 fill-emerald-500" /> MuvLern Admin System
           </span>
           <button className="secondary-btn text-xs px-5 py-2" onClick={() => { soundFx.playClick(); onClose(); }}>
             Fechar Painel
