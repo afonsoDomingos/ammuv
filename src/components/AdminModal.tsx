@@ -412,14 +412,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         {/* Header */}
         <div className="admin-modal-header">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-500 rounded-xl text-white shadow-md">
-              <ShieldCheck className="w-6 h-6 text-white" />
+            <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl text-white shadow-md border border-white/30">
+              <ShieldCheck className="w-6 h-6 text-amber-300 fill-amber-300" />
             </div>
             <div>
-              <h2 className="modal-title text-white font-['Outfit']">
-                Painel do Administrador
+              <h2 className="modal-title text-white font-['Outfit'] font-black tracking-wide text-xl">
+                Muv<span className="text-amber-300">Lern</span> <span className="text-xs font-black uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full ml-1 text-emerald-100">Admin</span>
               </h2>
-              <p className="text-xs text-emerald-400 font-extrabold">Gerenciador de Perguntas & Exercícios</p>
+              <p className="text-xs text-emerald-100 font-extrabold">Painel de Gestão & Exercícios</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

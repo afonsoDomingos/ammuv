@@ -1648,52 +1648,58 @@ button:focus-visible {
   border: 2px solid var(--border-light);
   border-bottom: 6px solid var(--border-dark);
   width: 100%;
-  max-width: 780px;
+  max-width: 820px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .admin-modal-header {
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding: 1.25rem 1.6rem;
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #0d9488 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 3px solid #0f172a;
+  border-bottom: 5px solid #047857;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
 }
 
 .admin-card-section {
   background: #ffffff;
   border: 2px solid var(--border-light);
-  border-bottom: 4px solid var(--border-dark);
-  border-radius: 20px;
-  padding: 1.25rem;
+  border-bottom: 5px solid var(--border-dark);
+  border-radius: 22px;
+  padding: 1.35rem;
   margin-bottom: 1.25rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.03);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-card-section:hover {
+  border-color: #cbd5e1;
 }
 
 .admin-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 900;
-  color: #475569;
+  color: var(--text-dark);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
 }
 
 .admin-input,
 .admin-select,
 .admin-textarea {
   width: 100%;
-  padding: 0.8rem 1rem;
-  border-radius: 14px;
+  padding: 0.85rem 1.1rem;
+  border-radius: 16px;
   border: 2px solid var(--border-light);
-  border-bottom: 3px solid var(--border-dark);
+  border-bottom: 4px solid var(--border-dark);
   font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   font-weight: 800;
@@ -1708,13 +1714,14 @@ button:focus-visible {
 .admin-select:focus,
 .admin-textarea:focus {
   border-color: var(--duo-green);
-  box-shadow: 0 0 0 3.5px rgba(88, 204, 2, 0.2);
+  border-bottom-color: var(--duo-green-dark);
+  box-shadow: 0 0 0 4px rgba(88, 204, 2, 0.2);
 }
 
 .admin-modality-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  gap: 0.75rem;
 }
 
 .admin-modality-btn {
@@ -1722,9 +1729,9 @@ button:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.85rem 0.5rem;
-  border-radius: 16px;
+  gap: 0.4rem;
+  padding: 0.95rem 0.6rem;
+  border-radius: 18px;
   border: 2px solid var(--border-light);
   border-bottom: 4px solid var(--border-dark);
   background: #ffffff;
@@ -1739,33 +1746,34 @@ button:focus-visible {
   background: #f8fafc;
   transform: translateY(-2px);
   border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .admin-modality-btn.active {
-  background: #ecfdf5;
-  border-color: #10b981;
-  border-bottom: 4px solid #047857;
-  color: #047857;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-  transform: translateY(-1px);
+  background: linear-gradient(180deg, #d7ffb8 0%, #bbf7d0 100%);
+  border-color: #58cc02;
+  border-bottom: 4px solid #46a302;
+  color: #15803d;
+  box-shadow: 0 6px 16px rgba(88, 204, 2, 0.3);
+  transform: translateY(-2px);
 }
 
 .admin-option-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: 16px;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: 18px;
   border: 2px solid var(--border-light);
-  border-bottom: 3px solid var(--border-dark);
+  border-bottom: 4px solid var(--border-dark);
   background: #f8fafc;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.75rem;
 }
 
 .admin-radio {
   width: 22px;
   height: 22px;
-  accent-color: #10b981;
+  accent-color: var(--duo-green);
   cursor: pointer;
   flex-shrink: 0;
 }
