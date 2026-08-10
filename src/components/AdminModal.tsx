@@ -118,98 +118,140 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   // Render Authentication Gate if locked
   if (!isUnlocked) {
     return (
-      <div className="modal-backdrop" onClick={onClose}>
-        <div className="modal-card max-w-md bg-slate-900 border-2 border-slate-700 border-b-8 border-slate-950 text-white rounded-[28px] shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-          
-          {/* Header */}
-          <div className="p-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shadow-inner">
-                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+      <div className="admin-login-overlay" onClick={onClose}>
+        <div className="admin-login-card" onClick={(e) => e.stopPropagation()}>
+
+          {/* LEFT PANEL — Branding & Illustration */}
+          <div className="admin-login-left">
+            <div className="admin-login-brand">
+              <div className="admin-login-logo-badge">
+                <ShieldCheck className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h2 className="font-black text-lg text-white font-['Outfit'] tracking-wide">Painel do Administrador</h2>
-                <p className="text-xs text-emerald-400 font-bold flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Área Restrita & Gestão
-                </p>
+                <h1 className="admin-login-brand-name">
+                  Muv<span className="text-amber-300">Lern</span>
+                </h1>
+                <span className="admin-login-brand-tag">Admin Dashboard</span>
               </div>
             </div>
-            
-            <button className="close-btn" onClick={() => { soundFx.playClick(); onClose(); }} title="Fechar">
-              <X className="w-5 h-5 text-slate-700" />
-            </button>
+
+            <div className="admin-login-illustration">
+              <div className="admin-login-graphic">
+                <div className="admin-login-ring ring-1" />
+                <div className="admin-login-ring ring-2" />
+                <div className="admin-login-ring ring-3" />
+                <div className="admin-login-center-icon">
+                  <Key className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <h2 className="admin-login-tagline">Gestão de Questões<br />&amp; Exercícios</h2>
+              <p className="admin-login-desc">Crie, edite e gerencie todo o conteúdo educacional do aplicativo em um só lugar.</p>
+            </div>
+
+            {/* Stats row */}
+            <div className="admin-login-stats">
+              {[
+                { label: 'Módulos', value: '12+' },
+                { label: 'Modalidades', value: '8' },
+                { label: 'Alunos', value: '∞' },
+              ].map(s => (
+                <div key={s.label} className="admin-login-stat">
+                  <span className="admin-login-stat-value">{s.value}</span>
+                  <span className="admin-login-stat-label">{s.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Form Content */}
-          <form onSubmit={handleLogin} className="p-6 space-y-5 bg-slate-900/95">
-            <div className="text-center space-y-2">
-              <div className="w-16 h-16 mx-auto rounded-3xl bg-gradient-to-b from-emerald-400 to-emerald-600 text-slate-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 border-b-4 border-emerald-700">
-                <Key className="w-8 h-8 stroke-[2.5]" />
-              </div>
-              <h3 className="font-black text-xl text-white font-['Outfit']">Identificação Requerida</h3>
-              <p className="text-xs font-bold text-slate-400 leading-relaxed max-w-xs mx-auto">
-                Digite a senha de acesso para gerenciar e cadastrar questões no aplicativo.
-              </p>
-            </div>
+          {/* RIGHT PANEL — Login Form */}
+          <div className="admin-login-right">
+            {/* Close button */}
+            <button
+              className="admin-login-close"
+              onClick={() => { soundFx.playClick(); onClose(); }}
+              title="Fechar"
+            >
+              <X className="w-4 h-4" />
+            </button>
 
-            {/* Credenciais Badge Card */}
-            <div className="p-4 bg-slate-800/80 border-2 border-slate-700/80 rounded-2xl text-xs space-y-2">
-              <p className="flex items-center gap-1.5 font-black text-amber-400 uppercase tracking-wider text-[11px]">
-                <Sparkles className="w-3.5 h-3.5 fill-amber-400" /> Credenciais Demonstrativas
-              </p>
-              <div className="grid grid-cols-2 gap-2 text-slate-200 font-bold">
-                <div className="p-2.5 bg-slate-900/90 rounded-xl border border-slate-700 text-center">
-                  <span className="text-[10px] text-slate-400 uppercase block font-black mb-0.5">Senha</span>
-                  <code className="text-emerald-400 font-black text-sm">admin123</code>
+            <form onSubmit={handleLogin} className="admin-login-form">
+              <div className="admin-login-form-header">
+                <h2 className="admin-login-form-title">Bem-vindo de volta</h2>
+                <p className="admin-login-form-sub">Entre com suas credenciais para acessar o painel administrativo.</p>
+              </div>
+
+              {/* Demo credentials */}
+              <div className="admin-login-creds">
+                <div className="admin-login-creds-title">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Credenciais de demonstração</span>
                 </div>
-                <div className="p-2.5 bg-slate-900/90 rounded-xl border border-slate-700 text-center">
-                  <span className="text-[10px] text-slate-400 uppercase block font-black mb-0.5">PIN</span>
-                  <code className="text-amber-400 font-black text-sm">1234</code>
+                <div className="admin-login-creds-row">
+                  <div className="admin-login-cred-pill">
+                    <span className="admin-cred-key">Senha</span>
+                    <code className="admin-cred-val green">admin123</code>
+                  </div>
+                  <div className="admin-login-cred-pill">
+                    <span className="admin-cred-key">PIN</span>
+                    <code className="admin-cred-val amber">1234</code>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {loginError && (
-              <div className="p-3 bg-rose-500/20 border-2 border-rose-500/40 text-rose-300 rounded-xl text-xs font-black text-center animate-shake">
-                {loginError}
+              {/* Error message */}
+              {loginError && (
+                <div className="admin-login-error">
+                  <span>⚠️ {loginError}</span>
+                </div>
+              )}
+
+              {/* Password field */}
+              <div className="admin-login-field">
+                <label className="admin-login-field-label">Senha ou PIN de Acesso</label>
+                <div className="admin-login-field-wrap">
+                  <Lock className="admin-login-field-icon" />
+                  <input
+                    type="password"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    placeholder="Digite a senha ou PIN..."
+                    className="admin-login-input"
+                    autoFocus
+                  />
+                </div>
               </div>
-            )}
 
-            <div className="space-y-1.5">
-              <label className="block text-xs font-black text-slate-400 uppercase tracking-wider">
-                Senha ou PIN de Acesso
-              </label>
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Digite admin123 ou 1234..."
-                className="w-full px-4 py-3.5 rounded-2xl bg-slate-800 border-2 border-slate-700 text-white font-extrabold text-base outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all placeholder:text-slate-500"
-                autoFocus
-              />
-            </div>
+              {/* Actions */}
+              <div className="admin-login-actions">
+                <button type="submit" className="admin-login-submit">
+                  <ShieldCheck className="w-5 h-5" />
+                  Entrar no Painel Admin
+                </button>
 
-            <div className="space-y-2.5 pt-1">
-              <button type="submit" className="primary-btn w-full py-3.5 text-base shadow-lg shadow-emerald-500/20">
-                <Lock className="w-5 h-5" /> Entrar no Painel Admin
-              </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPasswordInput('admin123');
+                    setTimeout(() => handleLogin(), 100);
+                  }}
+                  className="admin-login-autofill"
+                >
+                  <Zap className="w-4 h-4" />
+                  Preencher &amp; Entrar Automaticamente
+                </button>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setPasswordInput('admin123');
-                  setTimeout(() => handleLogin(), 100);
-                }}
-                className="w-full py-3 px-4 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 active:translate-y-0.5 text-emerald-400 font-black text-xs border-2 border-emerald-500/30 border-b-4 transition flex items-center justify-center gap-2"
-              >
-                <Zap className="w-4 h-4 fill-emerald-400" /> Preencher & Entrar Automaticamente
-              </button>
-            </div>
-          </form>
+              <p className="admin-login-footer-note">
+                🔒 Acesso protegido por autenticação por sessão
+              </p>
+            </form>
+          </div>
+
         </div>
       </div>
     );
   }
+
 
   const showFeedback = (text: string, type: 'success' | 'error' = 'success') => {
     setFeedbackMsg({ text, type });
