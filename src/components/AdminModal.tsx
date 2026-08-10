@@ -448,8 +448,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const customQuestionsList: CustomQuestionItem[] = getCustomQuestions();
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="admin-modal-card" onClick={(e) => e.stopPropagation()}>
+    <div className="admin-fullscreen">
+      <div className="admin-modal-card">
         
         {/* Header */}
         <div className="admin-modal-header">
@@ -517,11 +517,11 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         </div>
 
         {/* Content Body */}
-        <div className="flex-1 p-5 overflow-y-auto bg-slate-50">
+        <div className="admin-content-body">
 
           {/* TAB 1: CREATE QUESTION FORM */}
           {activeTab === 'create' && (
-            <form onSubmit={handleCreateQuestion} className="space-y-4">
+            <form onSubmit={handleCreateQuestion} className="admin-create-layout">
               
               {/* Topic & Module Pickers Card */}
               <div className="admin-card-section">
@@ -564,7 +564,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               </div>
 
               {/* Exercise Modality Picker Card */}
-              <div className="admin-card-section">
+              <div className="admin-card-section admin-full-col">
                 <label className="admin-label mb-3">
                   3. Modalidade da Questão (Tipo de Exercício)
                 </label>
@@ -858,9 +858,11 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               </div>
 
               {/* Submit Button */}
-              <button type="submit" className="primary-btn w-full py-4 text-base shadow-lg">
-                <PlusCircle className="w-5 h-5" /> ADICIONAR PERGUNTA MANUALMENTE
-              </button>
+              <div className="admin-full-col">
+                <button type="submit" className="primary-btn w-full py-4 text-base shadow-lg">
+                  <PlusCircle className="w-5 h-5" /> ADICIONAR PERGUNTA MANUALMENTE
+                </button>
+              </div>
             </form>
           )}
 
